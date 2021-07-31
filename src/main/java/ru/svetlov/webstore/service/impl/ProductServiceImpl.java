@@ -27,4 +27,10 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAll() {
         return repository.getAll();
     }
+
+    @Override
+    public boolean create(String title, double cost) {
+        if (cost < 0) return false;
+        return repository.create(title, cost).getId() > 0;
+    }
 }

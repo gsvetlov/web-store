@@ -16,7 +16,7 @@ public class InMemoryProductRepository implements ProductRepository {
         this.products = products;
     }
 
-    public InMemoryProductRepository(){
+    public InMemoryProductRepository() {
         products = initialize();
     }
 
@@ -28,6 +28,14 @@ public class InMemoryProductRepository implements ProductRepository {
     @Override
     public List<Product> getAll() {
         return Collections.unmodifiableList(products);
+    }
+
+    @Override
+    public Product create(String title, double cost) {
+        long nextId = products.stream().mapToLong(Product::getId).max().orElse(0L) + 1;
+        Product product = new Product(nextId, title, cost);
+        products.add(product);
+        return product;
     }
 
     private List<Product> initialize() {

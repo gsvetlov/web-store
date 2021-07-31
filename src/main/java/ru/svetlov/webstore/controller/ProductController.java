@@ -2,9 +2,8 @@ package ru.svetlov.webstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.service.ProductService;
 
@@ -20,14 +19,21 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    @ResponseBody
-    public String getProductById(@PathVariable Long id){
-        return productService.getById(id).toString();
+    public String getProductById(@PathVariable Long id, Model model){
+        model.addAttribute(productService.getById(id));
+        return "product_info";
     }
 
     @GetMapping("/product")
-    @ResponseBody
-    public List<Product> getAllProducts(){
-        return productService.getAll();
+    public String getAllProducts(Model model){
+        model.addAttribute("products", productService.getAll());
+        return "products";
+    }
+
+    @GetMapping("/product/create")
+    public String createProduct(@RequestParam("title") String title, @RequestParam("cost") double cost){
+        boolean result = productService.create(title, cost);
+        if (result) return "redirect:/product";
+        return "create_fail";
     }
 }

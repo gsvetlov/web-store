@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ProductRepository {
     Optional<Product> getById(Long id);
     List<Product> getAll();
+    Product create(String title, double cost);
 }
