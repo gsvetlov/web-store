@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+<div class="container">
+    <h4>Products table</h4>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Cost</th>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td style="background-color:LightGray; text-align: center" th:text="${product.id}">Id</td>
+            <td style="background-color:LightSeaGreen">
+                <a th:href="@{'/product/' + ${product.id}}"
+                   th:text="${product.title}"
+                   style="color:Black; font-weight: bold">Title link</a>
+            </td>
+            <td style="background-color:LightSalmon" th:text="${product.cost}">Cost</td>
+        </tr>
+    </table>
+    <h6>Total products:
+        <span th:text="${products.size()}"></span>
+    </h6>
+    <br/>
+    <a class="btn btn-primary" th:href="@{'/product/create'}">create product</a>
+    <a class="btn btn-primary" th:href="@{'/'}">back to main page</a>
+</div>
+</body>
+</html>
