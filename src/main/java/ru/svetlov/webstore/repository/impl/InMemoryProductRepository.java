@@ -38,6 +38,13 @@ public class InMemoryProductRepository implements ProductRepository {
         return product;
     }
 
+    @Override
+    public void update(Product product){
+        Product entry = products.stream().filter(e-> e.getId().equals(product.getId())).findFirst().orElse(Product.Null());
+        if (entry.getId() == 0) return;
+        products.set(products.indexOf(entry), product);
+    }
+
     private List<Product> initialize() {
         return new ArrayList<>(Arrays.asList(
                 new Product(1L, "Bread", 1.50),
