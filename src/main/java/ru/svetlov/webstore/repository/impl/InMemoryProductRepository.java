@@ -38,11 +38,18 @@ public class InMemoryProductRepository implements ProductRepository {
         return product;
     }
 
+
     @Override
-    public void update(Product product){
-        Product entry = products.stream().filter(e-> e.getId().equals(product.getId())).findFirst().orElse(Product.Null());
-        if (entry.getId() == 0) return;
+    public void update(Product product) {
+        // ничего не делаем, так как состояние объекта уже изменено сервисом, но для работы с БД обновлять придется.
+
+        Product entry = products.stream()
+                .filter(e -> e.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+        if (entry == null) return;
         products.set(products.indexOf(entry), product);
+
     }
 
     private List<Product> initialize() {

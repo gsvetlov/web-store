@@ -17,23 +17,19 @@
         <tr>
             <th>Id</th>
             <th>Title</th>
-            <th>Cost</th>
+            <th colspan="2">Cost</th>
         </tr>
         <tr th:each="product : ${products}">
-            <td style="background-color:LightGray; text-align: center" th:text="${product.id}">Id</td>
+            <td th:text="${product.id}" style="background-color:LightGray; text-align: center" width="15%">Id</td>
             <td style="background-color:LightSeaGreen">
                 <a th:href="@{'/product/' + ${product.id}}"
                    th:text="${product.title}"
                    style="color:Black; font-weight: bold">Title link</a>
             </td>
-            <td style="background-color:LightSalmon">
-                <table>
-                    <tr>
-                        <td th:text="${product.cost}"></td>
-                        <td><a th:href="@{'/product/change_cost?add=1&uid=' + ${product.id}}" class="btn btn-info btn-sm">Add</a></td>
-                        <td><a th:href="@{'/product/change_cost?sub=1&uid=' + ${product.id}}" class="btn btn-info btn-sm">Sub</a></td>
-                    </tr>
-                </table>
+            <td th:text="${product.cost}" width="10%" style="background-color:LightSalmon" ></td>
+            <td width="20%" style="background-color:LightSalmon">
+                <span><a th:href="@{'/product/change_cost?add=1&uid=' + ${product.id}}" class="btn btn-info btn-sm">Add</a></span>
+                <span><a th:href="@{'/product/change_cost?sub=1&uid=' + ${product.id}}" class="btn btn-info btn-sm">Sub</a></span>
             </td>
         </tr>
     </table>
