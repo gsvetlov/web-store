@@ -7,6 +7,7 @@ import ru.svetlov.webstore.repository.ProductRepository;
 import ru.svetlov.webstore.service.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -32,5 +33,23 @@ public class ProductServiceImpl implements ProductService {
     public boolean create(String title, double cost) {
         if (cost < 0) return false;
         return repository.create(title, cost).getId() > 0;
+    }
+
+    @Override
+    public void changeCost(Long id, double value) {
+        Product product = checkExist(id);
+        changeIfCostIsPositive(product, value);
+    }
+
+    private void changeIfCostIsPositive(Product product, double value) {
+        if (product.equals(Product.Null())) return;
+        double newCost = product.getCost() + value;
+        if (newCost < 0) return;
+        product.setCost(newCost);
+        repository.update(product);
+    }
+
+    private Product checkExist(Long id) {
+        return getById(id);
     }
 }

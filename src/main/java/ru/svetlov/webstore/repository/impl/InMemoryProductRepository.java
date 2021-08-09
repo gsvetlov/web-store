@@ -1,6 +1,5 @@
 package ru.svetlov.webstore.repository.impl;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.repository.ProductRepository;
@@ -36,6 +35,20 @@ public class InMemoryProductRepository implements ProductRepository {
         Product product = new Product(nextId, title, cost);
         products.add(product);
         return product;
+    }
+
+
+    @Override
+    public void update(Product product) {
+        // ничего не делаем, так как состояние объекта уже изменено сервисом, но для работы с БД обновлять придется.
+/*
+        Product entry = products.stream()
+                .filter(e -> e.getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
+        if (entry == null) return;
+        products.set(products.indexOf(entry), product);
+*/
     }
 
     private List<Product> initialize() {
