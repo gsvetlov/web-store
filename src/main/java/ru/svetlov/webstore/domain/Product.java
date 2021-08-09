@@ -1,5 +1,12 @@
 package ru.svetlov.webstore.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "products")
+@NamedQueries({
+        @NamedQuery(name = "Product.getAll", query = "from Product p order by p.id")
+})
 public class Product {
     private static final Product nullProduct;
 
@@ -11,8 +18,15 @@ public class Product {
         return nullProduct;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "cost")
     private Double cost;
 
 
@@ -45,6 +59,11 @@ public class Product {
 
     public Product(Long id, String title, Double cost) {
         this.id = id;
+        this.title = title;
+        this.cost = cost;
+    }
+
+    public Product(String title, Double cost) {
         this.title = title;
         this.cost = cost;
     }
