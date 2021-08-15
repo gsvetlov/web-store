@@ -1,26 +1,28 @@
 package ru.svetlov.webstore.domain;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "products")
 public class Product {
-    private static final Product nullProduct;
-
-    static {
-        nullProduct = new Product(0L, "Unknown product", 0.0);
-    }
-
-    public static Product Null() {
-        return nullProduct;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "title", length = 127, nullable = false)
     private String title;
-    private Double cost;
+
+    @Column(name = "cost", scale = 12, precision = 2, nullable = false)
+    private BigDecimal cost;
 
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 
@@ -32,21 +34,25 @@ public class Product {
         this.title = title;
     }
 
-    public Double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(Double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
-    public Product() {
+    protected Product() {
     }
 
-    public Product(Long id, String title, Double cost) {
-        this.id = id;
+    public Product(String title, BigDecimal cost) {
         this.title = title;
         this.cost = cost;
+    }
+
+    public Product(String title, Double cost) {
+        this.title = title;
+        this.cost = BigDecimal.valueOf(cost);
     }
 
     @Override

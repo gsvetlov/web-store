@@ -9,44 +9,21 @@ import ru.svetlov.webstore.service.ProductService;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ProductController {
     private final ProductService productService;
 
-    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/product/{id}")
-    public String getProductById(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.getById(id));
-        return "product_info";
+    public Product getProductById(@PathVariable Long id){
+        return productService.getById(id);
     }
 
     @GetMapping("/products")
-    public String getAllProducts(Model model) {
-        model.addAttribute("products", productService.getAll());
-        return "products";
-    }
-
-    @GetMapping("/product/create")
-    public String showCreateProductForm() {
-        return "create_product";
-    }
-
-    @PostMapping("/product/create")
-    public String createProduct(@RequestParam("title") String title, @RequestParam("cost") double cost) {
-        boolean result = productService.create(title, cost);
-        if (result) return "redirect:/products";
-        return "create_fail";
-    }
-
-    @GetMapping("/product/change_cost")
-    public String changeCost(@RequestParam("uid") Long id,
-                             @RequestParam(name = "add", defaultValue = "0") double add,
-                             @RequestParam(name = "sub", defaultValue = "0") double sub) {
-        productService.changeCost(id, add - sub);
-        return "redirect:/products";
+    public List<Product> getAll(){
+        return productService.getAll();
     }
 }

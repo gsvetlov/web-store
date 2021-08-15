@@ -1,13 +1,9 @@
 package ru.svetlov.webstore.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.svetlov.webstore.domain.Product;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface ProductRepository {
-    Optional<Product> getById(Long id);
-    List<Product> getAll();
-    Product create(String title, double cost);
-    void update(Product product);
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
 }
