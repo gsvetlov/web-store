@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <!-- Bootstrap css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+                crossorigin="anonymous"></script>
+    <!-- Angular.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"
+            integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--Bootstrap-ui-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js"
+            integrity="sha512-+qNXcNMBMY6Vx1oKJbdSsPsKS+bcB2yrprqb2jysz8bYC+vPJQsNBapHpq8zvf7oNGEhCgkFLKAsIeUXSkThHg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--    our script-->
+    <script src="index.js"></script>
+</head>
+
+<body ng-app="product-catalog">
+<div class="container">
+    <h2>Каталог продуктов</h2>
+    <table class="table" ng-controller="indexController">
+        <thead>
+        <tr>
+            <td colspan="2">
+                <div class="btn-group-sm">
+                    <label>Текущая страница: </label>
+                    <label class="btn btn-outline-info" ng-click="firstPage()">&nbsp;&laquo;&nbsp;</label>
+                    <label class="btn btn-outline-info" ng-click="previousPage()">&nbsp;&lsaquo;&nbsp;</label>
+                    <label class="btn btn-outline-info">{{currentPage}}</label>
+                    <label class="btn btn-outline-info" ng-click="nextPage()">&nbsp;&rsaquo;&nbsp;</label>
+                    <label class="btn btn-outline-info" ng-click="lastPage()">&nbsp;&raquo;&nbsp;</label>
+                </div>
+            </td>
+            <td colspan="2">
+                <div class="btn-group-sm">
+                    <label>Кол-во на странице: </label>
+                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="5">5</label>
+                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="10">10</label>
+                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="20">20</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>ИД</td>
+            <td>Название</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody ng-repeat="p in products">
+        <tr>
+            <td>{{p.id}}</td>
+            <td>{{p.title}}</td>
+            <td>{{p.price}}</td>
+            <td><label class="btn btn-outline-danger btn-sm" ng-click="btnDeleteClick(p.id)">Удалить</label></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+
+</html>
