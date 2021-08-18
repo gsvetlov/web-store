@@ -3,10 +3,13 @@ package ru.svetlov.webstore.service;
 import ru.svetlov.webstore.domain.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
-    Product getById(Long id);
+    Optional<Product> getById(Long id);
     List<Product> getAll();
-    boolean create(String title, double cost);
-    void changeCost(Long id, double value);
+    Product create(String title, Double cost);
+    void deleteById(Long id);
+
+    List<Product> getAll(Double minPrice, Double maxPrice);
 }
