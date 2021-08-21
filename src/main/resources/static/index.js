@@ -1,4 +1,4 @@
-const marketService = 'http://localhost:8189/market';
+const marketService = 'http://localhost:8189/market/api/v1';
 angular.module('product-catalog', ['ui.bootstrap'])
     .controller('indexController', function ($scope, $http) {
         $scope.itemsPerPage = 5;
@@ -26,7 +26,7 @@ angular.module('product-catalog', ['ui.bootstrap'])
 
         $scope.btnDeleteClick = function (id) {
             console.log('button clicked ' + id);
-            $http.get(marketService + '/products/delete/' + id)
+            $http.delete(marketService + '/products/' + id)
                 .then(function (response) {
                     console.log('delete response: ' + response);
                     updateCatalog($scope.currentPage, $scope.itemsPerPage);
@@ -39,23 +39,22 @@ angular.module('product-catalog', ['ui.bootstrap'])
             updateCatalog($scope.currentPage, $scope.itemsPerPage);
         }
         $scope.previousPage = function (){
-            console.log('previous page');
             if ($scope.currentPage > 1) {
                 $scope.currentPage--;
                 updateCatalog($scope.currentPage, $scope.itemsPerPage);
             }
+            console.log('previous page: ' + $scope.currentPage);
         }
         $scope.nextPage = function (){
-            console.log('next page');
-            if ($scope.currentPage < $scope.totalPages) {
+            if ($scope.currentPage < Math.ceil($scope.totalElements / $scope.itemsPerPage)) {
                 $scope.currentPage++;
                 updateCatalog($scope.currentPage, $scope.itemsPerPage);
             }
+            console.log('next page: ' + $scope.currentPage);
         }
         $scope.lastPage = function (){
-            console.log('last page');
-            $scope.currentPage = Math.floor($scope.totalElements / $scope.itemsPerPage);
-            if ($scope.currentPage < 1) $scope.currentPage = 1;
+            $scope.currentPage = Math.ceil($scope.totalElements / $scope.itemsPerPage);
+            console.log('last page: ' + $scope.currentPage);
             updateCatalog($scope.currentPage, $scope.itemsPerPage);
         }
 
