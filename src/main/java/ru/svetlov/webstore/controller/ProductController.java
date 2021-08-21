@@ -1,9 +1,8 @@
 package ru.svetlov.webstore.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.dto.ProductDto;
 import ru.svetlov.webstore.service.ProductService;
 
@@ -21,14 +20,12 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<ProductDto> getAll(
+    public Page<ProductDto> getAll(
             @RequestParam(required = false, name = "min_price") Double minPrice,
-            @RequestParam(required = false, name = "max_price") Double maxPrice) {
-        return productService
-                .getAll(minPrice, maxPrice)
-                .stream()
-                .map(ProductDto::new)
-                .collect(Collectors.toList());
+            @RequestParam(required = false, name = "max_price") Double maxPrice,
+            @RequestParam(required = false, name = "p", defaultValue = "0") int page,
+            @RequestParam(required = false, name = "ps", defaultValue = "10") int pageSize) {
+        return productService.getAll(page, pageSize, minPrice, maxPrice).map(ProductDto::new);
     }
 
     @PostMapping("/products")

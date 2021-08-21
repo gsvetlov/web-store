@@ -1,6 +1,9 @@
 package ru.svetlov.webstore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.repository.ProductRepository;
@@ -26,11 +29,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAll() {
-        return Collections.unmodifiableList(productRepository.findAll());
-    }
-
-    @Override
     public Product create(String title, Double cost) {
         return productRepository.save(new Product(title, cost));
     }
@@ -41,16 +39,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAll(Double minPrice, Double maxPrice) {
+    public Page<Product> getAll(int page, int pageSize, Double minPrice, Double maxPrice) {
+
         if (minPrice == null && maxPrice == null) {
-            return productRepository.findAll();
+            return productRepository.findAll(PageRequest.of(page, pageSize));
         }
         if (maxPrice == null) {
-            return productRepository.findAllByCostGreaterThanEqual(BigDecimal.valueOf(minPrice));
+            return productRepository
+                    .findAllByCostGreaterThanEqual(PageRequest.of(page, pageSize), BigDecimal.valueOf(minPrice));
         }
         if (minPrice == null) {
-            return productRepository.findAllByCostLessThanEqual(BigDecimal.valueOf(maxPrice));
+            return productRepository.findAllByCostLessThanEqual(PageRequest.of(page, pageSize), BigDecimal.valueOf(maxPrice));
         }
-        return productRepository.findAllByCostBetween(BigDecimal.valueOf(minPrice), BigDecimal.valueOf(maxPrice));
+        return productRepository.findAllByCostBetween(
+                PageRequest.of(page, pageSize),
+                BigDecimal.valueOf(minPrice),
+                BigDecimal.valueOf(maxPrice));
     }
 }
