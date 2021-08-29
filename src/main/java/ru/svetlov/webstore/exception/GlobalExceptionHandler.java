@@ -8,12 +8,20 @@ import ru.svetlov.webstore.dto.ApiErrorDto;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(ResourceNotFoundException.class)
+
+    @ExceptionHandler
     public ResponseEntity<ApiErrorDto> getResourceNotFoundResponse(ResourceNotFoundException e){
         return new ResponseEntity<>(new ApiErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler({IllegalArgumentException.class, BadRequestException.class})
+
+    @ExceptionHandler
     public ResponseEntity<ApiErrorDto> getBadRequestResponse(IllegalArgumentException e) {
         return new ResponseEntity<>(new ApiErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiErrorDto> getBadRequestResponse(BadRequestException e) {
+        return new ResponseEntity<>(new ApiErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

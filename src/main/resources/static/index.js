@@ -7,8 +7,6 @@ angular.module('product-catalog', ['ui.bootstrap'])
         $scope.currentPage = 1;
         $scope.inputForm = {id: null, title: null, price: null};
 
-
-
         let updateCatalog = function (pageIndex = 1, pageSize = 10) {
             $http({
                 url: marketService + '/products/',

@@ -1,48 +1,67 @@
 package ru.svetlov.webstore.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.repository.ProductRepository;
 import ru.svetlov.webstore.service.ProductService;
 
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final Validator validator;
 
-    @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    @Override
+    public boolean exists(Long id){
+        return productRepository.existsById(id);
     }
 
     @Override
     public Optional<Product> getById(Long id) {
-        validateId(id);
+        throwIfNotValid(validator.validateValue(Product.class, "id", id));
         return productRepository.findById(id);
     }
 
     @Override
     public Optional<Product> create(String title, Double cost) {
-        validateTitle(title);
-        validateCost(cost);
+        throwIfNotValid(validator.validateValue(Product.class, "title", title));
+        throwIfNotValid(validator.validateValue(Product.class, "cost", BigDecimal.valueOf(cost)));
         return Optional.of(productRepository.save(new Product(title, cost)));
     }
 
     @Override
     public Optional<Product> update(Product product) {
-        validateTitle(product.getTitle());
-        validateCost(product.getCost().doubleValue());
+        throwIfNotValid(validator.validate(product));
         return Optional.of(productRepository.save(product));
     }
 
     @Override
+    @Transactional
+    public void update(Long id, String title, Double cost) {
+        Product product = productRepository.getById(id);
+        product.setTitle(title);
+        product.setCost(BigDecimal.valueOf(cost));
+
+        throwIfNotValid(validator.validate(product));
+        productRepository.save(product);
+
+    }
+
+    @Override
     public void deleteById(Long id) {
-        validateId(id);
+        throwIfNotValid(validator.validateValue(Product.class, "id", id));
         productRepository.deleteById(id);
     }
 
@@ -66,16 +85,10 @@ public class ProductServiceImpl implements ProductService {
                 BigDecimal.valueOf(maxPrice));
     }
 
-    private void validateId(Long id) {
-        if (id < 1) throw new IllegalArgumentException("Invalid id: " + id);
-    }
-
-    private void validateTitle(String title) {
-        if (title == null || title.isEmpty() || title.isBlank())
-            throw new IllegalArgumentException("Title is null or empty");
-    }
-
-    private void validateCost(Double cost) {
-        if (cost < 0.0) throw new IllegalArgumentException("Invalid cost: " + cost);
+    private void throwIfNotValid(Set<ConstraintViolation<Product>> violations) {
+        if (!violations.isEmpty()) {
+            throw new IllegalArgumentException(violations
+                    .stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", ")));
+        }
     }
 }
