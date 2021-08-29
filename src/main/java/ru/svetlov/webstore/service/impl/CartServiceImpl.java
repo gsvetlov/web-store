@@ -8,8 +8,8 @@ import ru.svetlov.webstore.service.CartService;
 import ru.svetlov.webstore.service.ProductService;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,14 +29,8 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public Map<Product, Integer> getAll() {
-        Map<Product, Integer> result = new HashMap<>(contents.size());
-        Set<Product> products = contents.keySet().stream()
-                .map(productService::getById)
-                .map(optional -> optional.orElseThrow(IllegalArgumentException::new))
-                .collect(Collectors.toSet());
-        products.forEach(product -> result.put(product, contents.get(product.getId())));
-        return Collections.unmodifiableMap(result);
+    public Map<Long, Integer> getAll() {
+        return Collections.unmodifiableMap(contents);
     }
 
     @Override
@@ -47,10 +41,17 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateItem(CartItemDto dto) {
-        Long id = dto.getId();
-        throwIfIdNotExist(id);
-        throwIfProductNotExist(id);
-        contents.put(id, dto.getQuantity());
+        throwIfIdNotExist(dto.getId());
+        throwIfProductNotExist(dto.getId());
+        contents.put(dto.getId(), dto.getQuantity());
+    }
+
+    @Override
+    public BigDecimal getTotalSum() {
+        return productService.getAllByIdIn(contents.keySet()).stream()
+                .map(p -> p.getCost().multiply(BigDecimal.valueOf(contents.get(p.getId()))))
+                .reduce(BigDecimal::add)
+                .orElseThrow();
     }
 
     @Override
@@ -60,13 +61,13 @@ public class CartServiceImpl implements CartService {
     }
 
     private void throwIfProductNotExist(Long id) {
-        if (productService.exists(id)) {
+        if (!productService.exists(id)) {
             throw new IllegalArgumentException("Invalid id: " + id);
         }
     }
 
     private void throwIfIdNotExist(Long id) {
         if (!contents.containsKey(id))
-            throw new IllegalArgumentException("Invalid item id: " + id);
+            throw new IllegalArgumentException("Invalid cart item id: " + id);
     }
 }

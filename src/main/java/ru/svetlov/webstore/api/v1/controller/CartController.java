@@ -19,7 +19,7 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<CartDto> getCartContents() {
-        return new ResponseEntity<>(new CartDto(cartService.getAll()), HttpStatus.OK);
+        return new ResponseEntity<>(new CartDto(cartService.getAll(), cartService.getTotalSum()), HttpStatus.OK);
     }
 
     @PostMapping

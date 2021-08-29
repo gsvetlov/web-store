@@ -12,9 +12,9 @@ import ru.svetlov.webstore.service.ProductService;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +26,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean exists(Long id){
         return productRepository.existsById(id);
+    }
+
+    @Override
+    public List<Product> getAllByIdIn(Collection<Long> ids) {
+        return Collections.unmodifiableList(productRepository.findAllByIdIn(ids));
     }
 
     @Override
