@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.dto.CartDto;
 import ru.svetlov.webstore.dto.CartItemDto;
 import ru.svetlov.webstore.service.CartService;
@@ -29,19 +28,19 @@ public class CartController {
         return new ResponseEntity<>(new CartDto(itemList, cartService.getTotalSum()), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public void addItem(@Validated @RequestBody CartItemDto dto, BindingResult bindingResult) {
         ControllerUtil.throwIfNotValid(bindingResult);
         cartService.addItem(dto);
     }
 
-    @PutMapping
+    @PostMapping("/update")
     public void changeItem(@Validated @RequestBody CartItemDto dto, BindingResult bindingResult) {
         ControllerUtil.throwIfNotValid(bindingResult);
         cartService.updateItem(dto);
     }
 
-    @DeleteMapping
+    @PostMapping("/remove")
     public void removeItem(@RequestBody CartItemDto dto) {
         cartService.removeItem(dto);
     }
