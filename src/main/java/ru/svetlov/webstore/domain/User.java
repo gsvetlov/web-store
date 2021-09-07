@@ -1,15 +1,14 @@
 package ru.svetlov.webstore.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @NamedEntityGraph(name = "user-with-roles", attributeNodes = @NamedAttributeNode(value = "roles"))
@@ -51,8 +50,8 @@ public class User {
     private Collection<SecurityRole> roles;
 
     @Column(name = "created_on")
-    @CreatedDate
-    private java.sql.Date createdOn;
+    @CreationTimestamp
+    private LocalDateTime createdOn;
 
     @Column(name = "updated_on")
     @UpdateTimestamp
