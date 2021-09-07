@@ -1,15 +1,21 @@
 package ru.svetlov.webstore.domain;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
-@Data
 @Entity
 @Table(name = "user_info")
-public class UserInfo extends User {
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class UserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -1,15 +1,24 @@
 package ru.svetlov.webstore.domain;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
-@Data
+@NamedEntityGraph(name = "user-with-roles", attributeNodes = @NamedAttributeNode(value = "roles"))
+@NamedEntityGraph(name = "user-with-info", attributeNodes = @NamedAttributeNode(value = "userInfo"))
+
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,15 +35,25 @@ public class User {
     @Length(min = 3, max = 127, message = "Valid password length is 3 to 127 characters")
     private String password;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "info_id")
     private UserInfo userInfo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<SecurityRole> roles;
 
+    @Column(name = "created_on")
+    @CreatedDate
+    private java.sql.Date createdOn;
+
+    @Column(name = "updated_on")
+    @UpdateTimestamp
+    private LocalDateTime modifiedOn;
+
+    @Version
+    private java.sql.Timestamp version;
 }

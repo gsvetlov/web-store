@@ -15,13 +15,18 @@ import ru.svetlov.webstore.service.UserService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
-public class AppConfig extends WebSecurityConfigurerAdapter {
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers("/api/**").hasAnyRole("SA", "ADMIN", "USER")
+                .anyRequest().permitAll()
+                .and().formLogin()
+                .and().logout().deleteCookies("JSESSIONID")
+                .and().csrf().ignoringAntMatchers("/h2-console/**")
+                .and().headers().frameOptions().sameOrigin();
     }
 
     @Bean
