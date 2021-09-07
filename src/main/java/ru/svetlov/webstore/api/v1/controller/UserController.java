@@ -26,10 +26,10 @@ public class UserController {
         return new ResponseEntity<>(new UserDto(user), HttpStatus.CREATED);
     }
 
-    @GetMapping("/create") //TODO: Для тестов, убрать
-    public ResponseEntity<UserDto> createUserByGet(@RequestParam(name = "u") String username,
-                                                   @RequestParam(name = "p") String password) {
-        User user = userService.createUser(username, password);
-        return new ResponseEntity<>(new UserDto(user), HttpStatus.CREATED);
-    }
+//    @GetMapping("/create") //TODO: Для тестов, убрать
+//    public ResponseEntity<UserDto> createUserByGet(@RequestParam(name = "u") String username,
+//                                                   @RequestParam(name = "p") String password) {
+//        User user = userService.createUser(username, password);
+//        return new ResponseEntity<>(new UserDto(user), HttpStatus.CREATED);
+//    }
 }

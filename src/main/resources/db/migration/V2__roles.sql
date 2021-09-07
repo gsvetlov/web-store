@@ -1,11 +1,15 @@
 CREATE TABLE permissions (
     id SERIAL PRIMARY KEY,
-    permission VARCHAR(255) NOT NULL UNIQUE
+    permission VARCHAR(255) NOT NULL UNIQUE,
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE roles (
     role_id SERIAL PRIMARY KEY,
-    role VARCHAR(255) NOT NULL UNIQUE
+    role VARCHAR(255) NOT NULL UNIQUE,
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE roles_permissions (
@@ -19,7 +23,9 @@ CREATE TABLE user_info (
     first_name VARCHAR(127),
     last_name VARCHAR(127),
     mid_name VARCHAR(127),
-    email VARCHAR(320)
+    email VARCHAR(320),
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE users (
@@ -27,8 +33,8 @@ CREATE TABLE users (
     username VARCHAR(127) NOT NULL UNIQUE,
     password VARCHAR(127) NOT NULL,
     info_id BIGINT REFERENCES user_info,
-    created_on DATE,
-    updated_on DATE
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE users_roles (

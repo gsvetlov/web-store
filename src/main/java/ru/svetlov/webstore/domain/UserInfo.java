@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_info")
@@ -37,6 +40,14 @@ public class UserInfo {
     @Column(name = "email")
     @Email(message = "Not valid email address")
     private String email;
+
+    @Column(name = "created_on")
+    @CreationTimestamp
+    private LocalDateTime created;
+
+    @Column(name = "updated_on")
+    @UpdateTimestamp
+    private LocalDateTime modified;
 
     public UserInfo(String firstName, String lastName, String middleName, String email) {
         this.firstName = firstName;

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,4 +35,12 @@ public class SecurityPermission {
     @NotNull
     @Length(min = 3, max = 255, message = "Valid permission length is 3 to 255 characters")
     private String permission;
+
+    @Column(name = "created_on")
+    @CreationTimestamp
+    private LocalDateTime created;
+
+    @Column(name = "updated_on")
+    @UpdateTimestamp
+    private LocalDateTime modified;
 }

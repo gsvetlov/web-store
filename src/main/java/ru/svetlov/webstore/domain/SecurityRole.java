@@ -5,9 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @NamedEntityGraph(name = "role-with-permissions", attributeNodes = @NamedAttributeNode(value = "permissions"))
@@ -38,4 +41,12 @@ public class SecurityRole {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Collection<SecurityPermission> permissions;
+
+    @Column(name = "created_on")
+    @CreationTimestamp
+    private LocalDateTime created;
+
+    @Column(name = "updated_on")
+    @UpdateTimestamp
+    private LocalDateTime modified;
 }

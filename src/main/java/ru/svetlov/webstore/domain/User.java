@@ -51,11 +51,11 @@ public class User {
 
     @Column(name = "created_on")
     @CreationTimestamp
-    private LocalDateTime createdOn;
+    private LocalDateTime created;
 
     @Column(name = "updated_on")
     @UpdateTimestamp
-    private LocalDateTime modifiedOn;
+    private LocalDateTime modified;
 
     public User(String username, String password) {
         this.username = username;
