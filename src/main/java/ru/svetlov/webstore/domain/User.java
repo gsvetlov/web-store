@@ -9,9 +9,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NamedEntityGraph(name = "user-with-roles", attributeNodes = @NamedAttributeNode(value = "roles"))
-@NamedEntityGraph(name = "user-with-info", attributeNodes = @NamedAttributeNode(value = "userInfo"))
+@NamedEntityGraph(name = "user-with-info-and-roles", attributeNodes = {
+        @NamedAttributeNode(value = "userInfo"),
+        @NamedAttributeNode(value = "roles")
+})
 
 @Entity
 @Table(name = "users")
@@ -20,7 +25,7 @@ import java.util.Collection;
 @Setter
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -53,11 +58,19 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime modifiedOn;
 
-    @Version
-    private java.sql.Timestamp version;
-
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public Collection<String> getRolesAsStrings() {
+        return roles.stream().map(SecurityRole::getRole).collect(Collectors.toList());
+    }
+
+    public Collection<String> getPermissionsAsStrings() {
+        return roles.stream()
+                .flatMap(role -> role.getPermissions().stream().map(SecurityPermission::getPermission))
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

@@ -18,7 +18,7 @@ import javax.validation.constraints.Email;
 public class UserInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "info_id")
     private Long id;
 
@@ -37,4 +37,11 @@ public class UserInfo {
     @Column(name = "email")
     @Email(message = "Not valid email address")
     private String email;
+
+    public UserInfo(String firstName, String lastName, String middleName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.email = email;
+    }
 }

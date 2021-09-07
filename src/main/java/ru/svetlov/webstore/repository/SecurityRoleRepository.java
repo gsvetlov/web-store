@@ -9,4 +9,6 @@ import java.util.Collection;
 public interface SecurityRoleRepository extends JpaRepository<SecurityRole, Integer> {
     @EntityGraph(value = "role-with-permissions")
     Collection<SecurityRole> findAllByIdIn(Collection<Integer> ids);
+
+    SecurityRole findByRoleIgnoreCase(String role);
 }

@@ -26,7 +26,9 @@ CREATE TABLE users (
     user_id BIGSERIAL PRIMARY KEY,
     username VARCHAR(127) NOT NULL UNIQUE,
     password VARCHAR(127) NOT NULL,
-    info_id BIGINT REFERENCES user_info
+    info_id BIGINT REFERENCES user_info,
+    created_on DATE,
+    updated_on DATE
 );
 
 CREATE TABLE users_roles (
@@ -54,10 +56,10 @@ INSERT INTO roles_permissions values (1, 1),
 -- bob:1234 '$2a$12$nJoqSubKOmtod59CyjdoU.DcaE9AH7eatWQBEkn8bPjUR5RMSDR/y'
 -- jack:1234 '$2a$12$a.yWBZhmbVwfVqs5GuF8UehE7cicBqxxDrJkbwWSA.NiRtCm1jzxm'
 
-INSERT INTO users (username, password) VALUES ('sa', '$2a$12$ofGl8wIqvoqlU2McOmMdjOp1ziqFdLSOYo075hxbBfPYkX0JNr5B.'),
-                                              ('admin', '$2a$12$Izsq7LbaEg28ZPwi4pkyxuGJboPFs0Ga62Fr3hudNQPKoYA/YyASW'),
-                                              ('bob', '$2a$12$nJoqSubKOmtod59CyjdoU.DcaE9AH7eatWQBEkn8bPjUR5RMSDR/y'),
-                                              ('jack', '$2a$12$a.yWBZhmbVwfVqs5GuF8UehE7cicBqxxDrJkbwWSA.NiRtCm1jzxm');
+INSERT INTO users (username, password, created_on) VALUES ('sa', '$2a$12$ofGl8wIqvoqlU2McOmMdjOp1ziqFdLSOYo075hxbBfPYkX0JNr5B.', '2021-01-01'),
+                                              ('admin', '$2a$12$Izsq7LbaEg28ZPwi4pkyxuGJboPFs0Ga62Fr3hudNQPKoYA/YyASW', '2021-01-01'),
+                                              ('bob', '$2a$12$nJoqSubKOmtod59CyjdoU.DcaE9AH7eatWQBEkn8bPjUR5RMSDR/y', '2021-01-01'),
+                                              ('jack', '$2a$12$a.yWBZhmbVwfVqs5GuF8UehE7cicBqxxDrJkbwWSA.NiRtCm1jzxm', '2021-01-01');
 INSERT INTO users_roles values (1, 1),
                                (2, 2),
                                (3, 2),

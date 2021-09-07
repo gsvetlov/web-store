@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 
 public class SecurityPermission {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -34,17 +34,4 @@ public class SecurityPermission {
     @NotNull
     @Length(min = 3, max = 255, message = "Valid permission length is 3 to 255 characters")
     private String permission;
-
-    @Column(name = "created")
-    @NotNull
-    @CreatedDate
-    private LocalDateTime timeCreated;
-
-    @Column(name = "updated")
-    @NotNull
-    @UpdateTimestamp
-    private LocalDateTime lastUpdated;
-
-    @Version
-    private LocalDateTime timestamp;
 }

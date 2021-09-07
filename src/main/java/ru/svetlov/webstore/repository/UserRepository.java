@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(value = "user-with-roles")
     Optional<User> findByUsername(String username);
 
-    @EntityGraph(value = "user-with-info")
+    @EntityGraph(value = "user-with-info-and-roles")
     Optional<User> findUserById(Long id);
 
     int countByUsername(String username);

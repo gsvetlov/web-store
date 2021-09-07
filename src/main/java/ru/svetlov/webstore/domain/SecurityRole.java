@@ -24,7 +24,7 @@ import java.util.Collection;
 
 public class SecurityRole {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
     private Integer id;
 
@@ -38,7 +38,4 @@ public class SecurityRole {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Collection<SecurityPermission> permissions;
-
-    @Version
-    private java.sql.Timestamp timestamp;
 }

@@ -1,30 +1,43 @@
 package ru.svetlov.webstore.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.domain.SecurityPermission;
 import ru.svetlov.webstore.domain.SecurityRole;
 import ru.svetlov.webstore.domain.User;
+import ru.svetlov.webstore.domain.UserInfo;
+import ru.svetlov.webstore.dto.UserDto;
 import ru.svetlov.webstore.repository.SecurityRoleRepository;
 import ru.svetlov.webstore.repository.UserRepository;
 import ru.svetlov.webstore.service.UserService;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final Validator validator;
     private final UserRepository userRepository;
     private final SecurityRoleRepository roleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(Validator validator,
+                           UserRepository userRepository,
+                           SecurityRoleRepository roleRepository,
+                           @Lazy BCryptPasswordEncoder passwordEncoder) {
+        this.validator = validator;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,7 +69,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getWithRolesAndPermissionsById(Long id) {
-        return userRepository.findById(id);
+        User user = userRepository.findUserById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id"));
+        user.setRoles(roleRepository.findAllByIdIn(user.getRoles().stream().map(SecurityRole::getId).collect(Collectors.toSet())));
+        return Optional.of(user);
     }
 
     @Override
@@ -69,9 +84,19 @@ public class UserServiceImpl implements UserService {
         if (userRepository.countByUsername(username) != 0) {
             throw new IllegalArgumentException("Username " + username + " already registered");
         }
-        User user = new User(username, password);
-        throwIfNotValid(validator.validate(User.class, user));
-        return userRepository.save(user);
+        User user = new User(username, passwordEncoder.encode(password));
+        user.setRoles(List.of(roleRepository.findByRoleIgnoreCase("role_user")));
+        //throwIfNotValid(validator.validate(user, User.class)); // TODO: fix
+        user = userRepository.save(user);
+        return getWithRolesAndPermissionsById(user.getId()).orElseThrow();
+    }
+
+    @Override
+    public User createUserFromDto(UserDto dto) {
+        User user = createUser(dto.getUsername(), dto.getPassword());
+        //user.setUserInfo(new UserInfo(dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getEmail())); // TODO: fix org.hibernate.TransientPropertyValueException
+        //user = userRepository.save(user);
+        return user;
     }
 
     private void throwIfNotValid(Set<ConstraintViolation<User>> violations) {
@@ -81,3 +106,4 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+}

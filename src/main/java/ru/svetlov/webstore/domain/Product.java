@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Min(value = 1, message = "Invalid id")
     private Long id;
@@ -25,9 +25,6 @@ public class Product {
     @Column(name = "cost", scale = 12, precision = 2, nullable = false)
     @DecimalMin(value = "0.01", message = "Cost less than 0.01 is not allowed")
     private BigDecimal cost;
-
-    @Version
-    private java.sql.Timestamp timestamp;
 
     public Product(String title, BigDecimal cost) {
         this.title = title;

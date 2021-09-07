@@ -3,6 +3,7 @@ package ru.svetlov.webstore.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +26,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and().formLogin()
                 .and().logout().deleteCookies("JSESSIONID")
-                .and().csrf().ignoringAntMatchers("/h2-console/**")
+                .and().csrf().ignoringAntMatchers("/h2-console/**") //TODO: для консоли
+                .and().csrf().ignoringAntMatchers("/api/**") // TODO: для разрешения POST запросов
                 .and().headers().frameOptions().sameOrigin();
     }
 
