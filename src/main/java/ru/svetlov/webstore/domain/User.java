@@ -16,7 +16,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -56,4 +55,9 @@ public class User {
 
     @Version
     private java.sql.Timestamp version;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

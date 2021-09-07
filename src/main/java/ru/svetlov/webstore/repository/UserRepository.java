@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @EntityGraph(value = "user-with-info")
     Optional<User> findUserById(Long id);
+
+    int countByUsername(String username);
 }
