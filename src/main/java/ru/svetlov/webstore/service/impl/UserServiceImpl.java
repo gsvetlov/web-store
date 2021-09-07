@@ -2,6 +2,8 @@ package ru.svetlov.webstore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -61,10 +63,16 @@ public class UserServiceImpl implements UserService {
         return permissions;
     }
 
+
     private User loadUserWithRolesAndPermissions(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("user %s not found", username)));
         user.setRoles(roleRepository.findAllByIdIn(user.getRoles().stream().map(SecurityRole::getId).collect(Collectors.toSet())));
         return user;
+    }
+
+    @Override
+    public User getUserRolesAndPermissionsByUsername(String username) {
+        return loadUserWithRolesAndPermissions(username);
     }
 
     @Override
@@ -97,6 +105,11 @@ public class UserServiceImpl implements UserService {
         //user.setUserInfo(new UserInfo(dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getEmail())); // TODO: fix org.hibernate.TransientPropertyValueException
         //user = userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public Page<User> getUsers(int pageNumber, int pageCount) {
+        return userRepository.findAll(PageRequest.of(pageNumber, pageCount));
     }
 
     private void throwIfNotValid(Set<ConstraintViolation<User>> violations) {
