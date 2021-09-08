@@ -15,6 +15,14 @@ const marketService = 'http://localhost:8189/market/api/v1';
                     templateUrl: 'registration/registration.html',
                     controller: 'registrationController'
                 })
+                .when('/cart', {
+                    templateUrl: 'cart/cart.html',
+                    controller: 'cartController'
+                })
+                .when('/checkout', {
+                    templateUrl: 'checkout/checkout.html',
+                    controller: 'checkoutController'
+                })
                 .otherwise({
                     redirectTo: '/'
                 });

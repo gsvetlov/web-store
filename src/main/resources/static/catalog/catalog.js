@@ -23,6 +23,11 @@ angular.module('market-app').controller('catalogController', function ($scope, $
 
         updateCatalog($scope.currentPage, $scope.itemsPerPage);
 
+        $scope.addToCart = function (productId) {
+            $http.get(marketService + '/cart/add/' + productId);
+            console.log('adding to cart: ' + productId);
+        }
+
         $scope.btnDeleteClick = function (id) {
             console.log('button clicked ' + id);
             $http.delete(marketService + '/products/' + id)

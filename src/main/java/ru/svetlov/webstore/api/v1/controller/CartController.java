@@ -1,16 +1,20 @@
 package ru.svetlov.webstore.api.v1.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Transient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.svetlov.webstore.dto.CartDto;
+import ru.svetlov.webstore.util.cart.Cart;
+import ru.svetlov.webstore.util.cart.impl.CartImpl;
 import ru.svetlov.webstore.dto.CartItemDto;
 import ru.svetlov.webstore.service.CartService;
 import ru.svetlov.webstore.util.ControllerUtil;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -21,28 +25,29 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping
-    public ResponseEntity<CartDto> getCartContents() {
-        Collection<CartItemDto> itemList = cartService.getAll().entrySet().stream()
-                .map(entry -> new CartItemDto(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(new CartDto(itemList, cartService.getTotalSum()), HttpStatus.OK);
+    public ResponseEntity<?> getCartContents() {
+        Cart cart = cartService.getCart();
+        return ResponseEntity.ok(new CartDto(cart.getContents(), cart.getTotal()));
     }
 
-    @PostMapping("/add")
-    public void addItem(@Validated @RequestBody CartItemDto dto, BindingResult bindingResult) {
-        ControllerUtil.throwIfNotValid(bindingResult);
-        cartService.addItem(dto);
+    @GetMapping("/add/{productId}")
+    public void addItem(@PathVariable Long productId) {
+        cartService.addItem(productId);
     }
 
-    @PostMapping("/update")
-    public void changeItem(@Validated @RequestBody CartItemDto dto, BindingResult bindingResult) {
-        ControllerUtil.throwIfNotValid(bindingResult);
-        cartService.updateItem(dto);
+    @GetMapping("/remove/{productId}")
+    public void removeItem(@PathVariable Long productId) {
+        cartService.removeItem(productId);
     }
 
-    @PostMapping("/remove")
-    public void removeItem(@RequestBody CartItemDto dto) {
-        cartService.removeItem(dto);
+    @GetMapping("/delete/{productId}")
+    public void deleteItem(@PathVariable Long productId) {
+        cartService.deleteItem(productId);
+    }
+
+    @GetMapping("/clear")
+    public void clearCart() {
+        cartService.clear();
     }
 }
 
