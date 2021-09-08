@@ -34,13 +34,13 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('edit-user-info')")
-    public Page<UserDto> getUsers(@RequestParam(name = "p", defaultValue = "1") int pageNumber,
+    public Page<UserDto> getUsers(@RequestParam(name = "p", defaultValue = "0") int pageNumber,
                                   @RequestParam(name = "c", defaultValue = "10") int pageCount) {
         return userService.getUsers(pageNumber, pageCount).map(UserDto::new);
     }
 
     @PostMapping()
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
+    public ResponseEntity<?> createUser(@RequestBody UserDto dto) {
         User user = userService.createUserFromDto(dto);
         return new ResponseEntity<>(new UserDto(user), HttpStatus.CREATED);
     }

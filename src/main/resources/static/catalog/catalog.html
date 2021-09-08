@@ -1,0 +1,59 @@
+<div>
+    <h2>Web market</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <td colspan="2">
+                <div class="btn-group-sm">
+                    <label>Текущая страница: </label>
+                    <label class="btn btn-outline-info" ng-click="firstPage()">&nbsp;&laquo;&nbsp;</label>
+                    <label class="btn btn-outline-info" ng-click="previousPage()">&nbsp;&lsaquo;&nbsp;</label>
+                    <label class="btn btn-outline-info">{{currentPage}}</label>
+                    <label class="btn btn-outline-info" ng-click="nextPage()">&nbsp;&rsaquo;&nbsp;</label>
+                    <label class="btn btn-outline-info" ng-click="lastPage()">&nbsp;&raquo;&nbsp;</label>
+                </div>
+            </td>
+            <td colspan="2">
+                <div class="btn-group-sm">
+                    <label>Кол-во на странице: </label>
+                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="5">5</label>
+                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="10">10</label>
+                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="20">20</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>ИД</td>
+            <td>Название</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody ng-repeat="p in products">
+        <tr>
+            <td>{{p.id}}</td>
+            <td>{{p.title}}</td>
+            <td>{{p.price}}</td>
+            <td>
+                <label class="btn btn-outline-info btn-sm" ng-click="btnUpdateClick(p)">Изменить</label>
+                <label class="btn btn-outline-danger btn-sm" ng-click="btnDeleteClick(p.id)">Удалить</label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <h4>Добавить новый продукт</h4>
+    <form novalidate ng-submit="createProduct()">
+        <label for="product_id">
+            <input id="product_id" class="form-control" type="number" placeholder="Id" ng-model="inputForm.id">
+        </label>
+        <label for="product_title">
+            <input id="product_title" class="form-control" type="text" placeholder="Название" ng-model="inputForm.title">
+        </label>
+        <label for="product_price">
+            <input id="product_price" class="form-control" type="number" placeholder="Цена" ng-model="inputForm.price">
+        </label>
+        <br>
+        <input class="btn btn-primary btn-sm" type="submit">
+        <input class="btn btn-secondary btn-sm" type="reset">
+    </form>
+</div>

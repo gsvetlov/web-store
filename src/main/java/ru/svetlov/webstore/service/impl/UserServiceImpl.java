@@ -3,6 +3,7 @@ package ru.svetlov.webstore.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     private User loadUserWithRolesAndPermissions(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("user %s not found", username)));
-        user.setRoles(roleRepository.findAllByIdIn(user.getRoles().stream().map(SecurityRole::getId).collect(Collectors.toSet())));
+        user.setRoles(getUserRoles(user));
         return user;
     }
 
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getWithRolesAndPermissionsById(Long id) {
         User user = userRepository.findUserById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id"));
-        user.setRoles(roleRepository.findAllByIdIn(user.getRoles().stream().map(SecurityRole::getId).collect(Collectors.toSet())));
+        user.setRoles(getUserRoles(user));
         return Optional.of(user);
     }
 
@@ -109,7 +110,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getUsers(int pageNumber, int pageCount) {
-        return userRepository.findAll(PageRequest.of(pageNumber, pageCount));
+        List<User> usersList = new ArrayList<>();
+        userRepository.findAll(PageRequest.of(pageNumber, pageCount)).stream()
+                .map(User::getUsername)
+                .forEach(u -> usersList.add(userRepository.findByUsername(u).orElseThrow()));
+        usersList.forEach(user -> user.setRoles(getUserRoles(user)));
+        return new PageImpl<>(usersList);
+    }
+
+    private Collection<SecurityRole> getUserRoles(User user) {
+        return roleRepository.findAllByIdIn(user.getRoles().stream().map(SecurityRole::getId).collect(Collectors.toSet()));
     }
 
     private void throwIfNotValid(Set<ConstraintViolation<User>> violations) {
