@@ -77,34 +77,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getWithRolesAndPermissionsById(Long id) {
+    public Optional<User> getUserById(Long id) {
         User user = userRepository.findUserById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id"));
         user.setRoles(getUserRoles(user));
         return Optional.of(user);
     }
 
     @Override
-    public Optional<User> getWithInfoById(Long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public User createUser(String username, String password) {
-        if (userRepository.countByUsername(username) != 0) {
-            throw new IllegalArgumentException("Username " + username + " already registered");
-        }
-        User user = new User(username, passwordEncoder.encode(password));
-        user.setRoles(List.of(roleRepository.findByRoleIgnoreCase("role_user")));
-        //throwIfNotValid(validator.validate(user, User.class)); // TODO: fix
-        user = userRepository.save(user);
-        return getWithRolesAndPermissionsById(user.getId()).orElseThrow();
-    }
-
-    @Override
     public User createUserFromDto(UserDto dto) {
-        User user = createUser(dto.getUsername(), dto.getPassword());
-        //user.setUserInfo(new UserInfo(dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getEmail())); // TODO: fix org.hibernate.TransientPropertyValueException
-        //user = userRepository.save(user);
+        if (userRepository.countByUsername(dto.getUsername()) != 0) {
+            throw new IllegalArgumentException("Username " + dto.getUsername() + " already registered");
+        }
+        User user = new User(dto.getUsername(), passwordEncoder.encode(dto.getPassword()));
+        user.setUserInfo(new UserInfo(dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getEmail()));
+        SecurityRole userRole = roleRepository.findByRoleIgnoreCase("role_user");
+        user.setRoles(List.of(userRole));
+        user = userRepository.save(user);
         return user;
     }
 

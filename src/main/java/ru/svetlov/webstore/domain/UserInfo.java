@@ -34,7 +34,7 @@ public class UserInfo {
     private String lastName;
 
     @Column(name = "mid_name")
-    @Length(min = 3, max = 127, message = "Valid username length is 3 to 127 characters")
+    @Length(max = 127, message = "Valid username length is 3 to 127 characters")
     private String middleName;
 
     @Column(name = "email")
