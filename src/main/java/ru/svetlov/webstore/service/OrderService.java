@@ -1,14 +1,14 @@
 package ru.svetlov.webstore.service;
 
-import org.springframework.stereotype.Service;
+import ru.svetlov.webstore.domain.Order;
 import ru.svetlov.webstore.domain.User;
 import ru.svetlov.webstore.dto.OrderDetailsDto;
 import ru.svetlov.webstore.util.cart.Cart;
 
-@Service
-public class OrderService {
+import java.util.Optional;
 
-    public void createOrder(User user, Cart cart, OrderDetailsDto details) {
-        
-    }
+public interface OrderService {
+    Order createOrder(User user, Cart cart, OrderDetailsDto details);
+
+    Optional<Order> getOrderById(Long orderId, User user);
 }
