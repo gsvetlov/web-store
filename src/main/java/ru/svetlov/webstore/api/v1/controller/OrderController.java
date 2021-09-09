@@ -10,6 +10,7 @@ import ru.svetlov.webstore.dto.OrderDetailsDto;
 import ru.svetlov.webstore.service.CartService;
 import ru.svetlov.webstore.service.OrderService;
 import ru.svetlov.webstore.service.UserService;
+import ru.svetlov.webstore.util.cart.Cart;
 
 import java.security.Principal;
 
@@ -24,7 +25,7 @@ public class OrderController {
     @PutMapping
     public void createOrder(@RequestBody OrderDetailsDto dto, Principal principal) {
         User user = userService.getUserRolesAndPermissionsByUsername(principal.getName());
-        cartService.getCart();
-        orderService
+        Cart cart = cartService.getCart();
+        orderService.createOrder(user, cart, dto);
     }
 }
