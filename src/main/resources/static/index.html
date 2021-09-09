@@ -5,67 +5,76 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Catalog</title>
+    <title>Web Market</title>
     <!-- Bootstrap css -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-                crossorigin="anonymous"></script>
-    <!-- Angular.js -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+    <!-- Angular.js + angular-route + NgStorage-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"
             integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js"
+            integrity="sha512-5zOAub3cIpqklnKmM05spv4xttemFDlbBrmRexWiP0aWV8dlayEGciapAjBQWA7lgQsxPY6ay0oIUVtY/pivXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"
+            integrity="sha512-/uxeq6VcJ+do+PtGgWZwRL/Z63r53cK6yek3NzvQwce6aCeheKRD59IuRsEFuNU8b0B/lZ6fUx1fncf0wMIm5Q=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--Bootstrap-ui-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js"
             integrity="sha512-+qNXcNMBMY6Vx1oKJbdSsPsKS+bcB2yrprqb2jysz8bYC+vPJQsNBapHpq8zvf7oNGEhCgkFLKAsIeUXSkThHg=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--    our script-->
-    <script src="index.js"></script>
 </head>
 
-<body ng-app="product-catalog">
+<body ng-app="market-app">
 <div class="container">
-    <h2>Каталог продуктов</h2>
-    <table class="table" ng-controller="indexController">
-        <thead>
-        <tr>
-            <td colspan="2">
-                <div class="btn-group-sm">
-                    <label>Текущая страница: </label>
-                    <label class="btn btn-outline-info" ng-click="firstPage()">&nbsp;&laquo;&nbsp;</label>
-                    <label class="btn btn-outline-info" ng-click="previousPage()">&nbsp;&lsaquo;&nbsp;</label>
-                    <label class="btn btn-outline-info">{{currentPage}}</label>
-                    <label class="btn btn-outline-info" ng-click="nextPage()">&nbsp;&rsaquo;&nbsp;</label>
-                    <label class="btn btn-outline-info" ng-click="lastPage()">&nbsp;&raquo;&nbsp;</label>
-                </div>
-            </td>
-            <td colspan="2">
-                <div class="btn-group-sm">
-                    <label>Кол-во на странице: </label>
-                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="5">5</label>
-                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="10">10</label>
-                    <label class="btn btn-outline-info" ng-model="itemsPerPage" uib-btn-radio="20">20</label>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>ИД</td>
-            <td>Название</td>
-            <td>Цена</td>
-        </tr>
-        </thead>
-        <tbody ng-repeat="p in products">
-        <tr>
-            <td>{{p.id}}</td>
-            <td>{{p.title}}</td>
-            <td>{{p.price}}</td>
-            <td><label class="btn btn-outline-danger btn-sm" ng-click="btnDeleteClick(p.id)">Удалить</label></td>
-        </tr>
-        </tbody>
-    </table>
+    <div ng-controller="indexController">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/" style="font-weight: bold;">Web market</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/catalog">Каталог товаров</a>
+                    </li>
+                    <li class="nav-item" ng-show="!isUserLoggedIn()">
+                        <a class="nav-link" href="#!/registration">Зарегистрироваться</a>
+                    </li>
+                    <li class="nav-item" ng-show="!isUserLoggedIn()">
+                        <form class="align-middle" ng-submit="tryToAuth()">
+                            <div class="input-group input-group-sm" style="padding: 4px;">
+                                <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
+                                       aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
 
+                                <input id="navPasswordField" class="form-control" ng-model="user.password"
+                                       type="password"
+                                       aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                                <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
+                                        style="margin-left: 10px;" type="submit">Войти
+                                </button>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                        <a class="nav-link" href="#!/user_profile">Профиль</a>
+                    </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
+                        <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <ng-view></ng-view>
+    <!--    our scripts-->
+    <script src="index.js"></script>
+    <script src="main_page/main_page.js"></script>
+    <script src="catalog/catalog.js"></script>
+    <script src="registration/registration.js"></script>
 </div>
 </body>
-
 </html>

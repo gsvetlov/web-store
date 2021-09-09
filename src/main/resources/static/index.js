@@ -1,61 +1,65 @@
 const marketService = 'http://localhost:8189/market/api/v1';
-angular.module('product-catalog', ['ui.bootstrap'])
-    .controller('indexController', function ($scope, $http) {
-        $scope.itemsPerPage = 5;
-        $scope.totalElements = 0;
-        $scope.totalPages = 0;
-        $scope.currentPage = 1;
-
-        let updateCatalog = function (pageIndex = 1, pageSize = 10){
-            $http({
-                url: marketService + '/products/',
-                method: 'GET',
-                params: {
-                    p: Math.floor(pageIndex - 1),
-                    ps: pageSize
-                }
-            }).then(function (response){
-                console.log(response);
-                $scope.products = response.data.content;
-                $scope.totalElements = response.data.totalElements;
-                $scope.totalPages = response.data.totalPages;
-            });
-        };
-
-        updateCatalog($scope.currentPage, $scope.itemsPerPage);
-
-        $scope.btnDeleteClick = function (id) {
-            console.log('button clicked ' + id);
-            $http.delete(marketService + '/products/' + id)
-                .then(function (response) {
-                    console.log('delete response: ' + response);
-                    updateCatalog($scope.currentPage, $scope.itemsPerPage);
+(function () {
+    angular.module('market-app', ['ngRoute', 'ngStorage'])
+        .config(function config($routeProvider, $locationProvider) {
+            $routeProvider
+                .when('/', {
+                    templateUrl: 'main_page/main_page.html',
+                    controller: 'mainPageController'
+                })
+                .when('/catalog', {
+                    templateUrl: 'catalog/catalog.html',
+                    controller: 'catalogController'
+                })
+                .when('/registration', {
+                    templateUrl: 'registration/registration.html',
+                    controller: 'registrationController'
+                })
+                .otherwise({
+                    redirectTo: '/'
                 });
-        };
-
-        $scope.firstPage = function (){
-            console.log('first page');
-            $scope.currentPage = 1;
-            updateCatalog($scope.currentPage, $scope.itemsPerPage);
-        }
-        $scope.previousPage = function (){
-            if ($scope.currentPage > 1) {
-                $scope.currentPage--;
-                updateCatalog($scope.currentPage, $scope.itemsPerPage);
+        })
+        .run(function run($rootScope, $http, $localStorage) {
+            if ($localStorage.marketAppUser) {
+                $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.marketAppUser.token;
             }
-            console.log('previous page: ' + $scope.currentPage);
-        }
-        $scope.nextPage = function (){
-            if ($scope.currentPage < Math.ceil($scope.totalElements / $scope.itemsPerPage)) {
-                $scope.currentPage++;
-                updateCatalog($scope.currentPage, $scope.itemsPerPage);
-            }
-            console.log('next page: ' + $scope.currentPage);
-        }
-        $scope.lastPage = function (){
-            $scope.currentPage = Math.ceil($scope.totalElements / $scope.itemsPerPage);
-            console.log('last page: ' + $scope.currentPage);
-            updateCatalog($scope.currentPage, $scope.itemsPerPage);
-        }
+        });
+})();
 
-    });
+angular.module('market-app').controller('indexController', function ($rootScope, $scope, $http, $localStorage) {
+
+    $scope.tryToAuth = function () {
+        $http.post(marketService + '/auth', $scope.user)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.marketAppUser = {
+                        username: $scope.user.username,
+                        token: response.data.token};
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+                }
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+    };
+
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+        if ($scope.user.username) {
+            $scope.user.username = null;
+        }
+        if ($scope.user.password) {
+            $scope.user.password = null;
+        }
+    };
+
+    $scope.clearUser = function () {
+        delete $localStorage.marketAppUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
+
+    $rootScope.isUserLoggedIn = function () {
+        return $localStorage.marketAppUser ? true : false;
+        }
+});

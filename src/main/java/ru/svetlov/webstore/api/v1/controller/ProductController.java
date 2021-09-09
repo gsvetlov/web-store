@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.svetlov.webstore.domain.Product;
 import ru.svetlov.webstore.dto.ProductDto;
 import ru.svetlov.webstore.exception.BadRequestException;
 import ru.svetlov.webstore.exception.ResourceNotFoundException;
 import ru.svetlov.webstore.service.ProductService;
-
-import java.math.BigDecimal;
-import java.util.Optional;
+import ru.svetlov.webstore.util.ControllerUtil;
 
 
 @RestController
@@ -37,7 +37,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> create(@RequestBody ProductDto dto) {
+    public ResponseEntity<ProductDto> create(@Validated @RequestBody ProductDto dto, BindingResult bindingResult) {
+        ControllerUtil.throwIfNotValid(bindingResult);
         return new ResponseEntity<>(new ProductDto(createProduct(dto)),
                 HttpStatus.CREATED);
     }
@@ -53,17 +54,10 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<ProductDto> update(@RequestBody ProductDto dto) {
-        Optional<Product> optional = productService.getById(dto.getId());
-        Product result = optional.isPresent() ? updateProduct(dto, optional.get()) : createProduct(dto);
-        return new ResponseEntity<>(new ProductDto(result), HttpStatus.OK);
+    public void update(@Validated @RequestBody ProductDto dto, BindingResult bindingResult) {
+        ControllerUtil.throwIfNotValid(bindingResult);
+        if (!productService.exists(dto.getId()))
+            throw new ResourceNotFoundException("Product not found: " + dto);
+        productService.update(dto.getId(), dto.getTitle(), dto.getPrice());
     }
-
-    private Product updateProduct(ProductDto dto, Product product){
-        product.setTitle(dto.getTitle());
-        product.setCost(BigDecimal.valueOf(dto.getPrice()));
-        return productService.update(product).orElseThrow(() ->
-                new BadRequestException("Failed to update product: " + product + " with " + dto));
-    }
-
 }
