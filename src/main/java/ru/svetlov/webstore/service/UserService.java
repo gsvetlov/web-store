@@ -9,9 +9,7 @@ import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     User getUserRolesAndPermissionsByUsername(String username);
-    Optional<User> getWithRolesAndPermissionsById(Long id);
-    Optional<User> getWithInfoById(Long id);
-    User createUser(String username, String password);
+    Optional<User> getUserById(Long id);
     User createUserFromDto(UserDto dto);
     Page<User> getUsers(int pageNumber, int pageCount);
 }

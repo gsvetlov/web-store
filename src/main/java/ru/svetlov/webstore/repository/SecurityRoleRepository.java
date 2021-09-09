@@ -10,5 +10,6 @@ public interface SecurityRoleRepository extends JpaRepository<SecurityRole, Inte
     @EntityGraph(value = "role-with-permissions")
     Collection<SecurityRole> findAllByIdIn(Collection<Integer> ids);
 
+    @EntityGraph(value = "role-with-permissions")
     SecurityRole findByRoleIgnoreCase(String role);
 }
