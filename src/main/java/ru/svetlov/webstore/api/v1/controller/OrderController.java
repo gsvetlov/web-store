@@ -25,16 +25,14 @@ public class OrderController {
     private final OrderService orderService;
 
     @PutMapping
-    @PreAuthorize(value = "isFullyAuthenticated()")
     public ResponseEntity<?> createOrder(@RequestBody OrderDetailsDto dto, Principal principal) {
         User user = userService.getUserRolesAndPermissionsByUsername(principal.getName());
-        Cart cart = cartService.getCart();
+        Cart cart = cartService.create();
         Order order = orderService.createOrder(user, cart, dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{orderId}")
-    @PreAuthorize(value = "isFullyAuthenticated()")
     public ResponseEntity<?> getOrder(@PathVariable Long orderId, Principal principal ) {
         User user = userService.getUserRolesAndPermissionsByUsername(principal.getName());
         Order order = orderService.getOrderById(orderId, null).orElseThrow(()->new ResourceNotFoundException("Order not found"));
