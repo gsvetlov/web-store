@@ -6,7 +6,7 @@ import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Repository;
 import ru.svetlov.webstore.repository.CartRepository;
 import ru.svetlov.webstore.util.cart.Cart;
-import ru.svetlov.webstore.util.cart.impl.RedisCartImpl;
+import ru.svetlov.webstore.util.cart.impl.CartImpl;
 
 import java.time.Duration;
 import java.util.List;
@@ -63,7 +63,7 @@ public class CartRepositoryImpl implements CartRepository {
     public Cart create() {
         long cid = cartIdCounter.incrementAndGet();
         String cartKey = KeyUtil.cartKey(cid);
-        Cart cart = new RedisCartImpl(cartKey);
+        Cart cart = new CartImpl(cartKey);
         save(cart);
         return cart;
     }

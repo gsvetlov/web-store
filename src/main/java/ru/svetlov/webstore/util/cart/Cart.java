@@ -7,17 +7,21 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 public interface Cart {
-    BigDecimal getTotal();
+    String getId();
+
+    void addItem(Product product);
 
     boolean incrementItem(Long productId);
 
-    boolean decrementItem(Long productId);
-
-    void addItem(Product product);
+    void decrementItem(Long productId);
 
     void removeItem(Long productId);
 
     void clear();
 
+    void merge(Cart other);
+
     Collection<CartItemDto> getContents();
+
+    BigDecimal getTotal();
 }

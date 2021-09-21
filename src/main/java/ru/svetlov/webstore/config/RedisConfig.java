@@ -9,7 +9,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 import ru.svetlov.webstore.util.cart.Cart;
-import ru.svetlov.webstore.util.cart.impl.RedisCartImpl;
+import ru.svetlov.webstore.util.cart.impl.CartImpl;
 
 import java.time.Duration;
 
@@ -27,9 +27,9 @@ public class RedisConfig {
     public RedisTemplate<String, Cart> redisCartTemplate() {
         RedisTemplate<String, Cart> template = new RedisTemplate<>();
         template.setHashKeySerializer(StringRedisSerializer.US_ASCII);
-        template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RedisCartImpl.class));
+        template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(CartImpl.class));
         template.setKeySerializer(StringRedisSerializer.US_ASCII);
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisCartImpl.class));
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(CartImpl.class));
         template.setConnectionFactory(redisConnectionFactory());
         template.afterPropertiesSet();
         return template;
