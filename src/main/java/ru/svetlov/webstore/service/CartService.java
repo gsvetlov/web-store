@@ -1,20 +1,26 @@
 package ru.svetlov.webstore.service;
 
-import ru.svetlov.webstore.dto.CartItemDto;
 import ru.svetlov.webstore.util.cart.Cart;
 
-import java.math.BigDecimal;
-import java.util.Map;
+import java.util.Optional;
 
 public interface CartService {
 
-    Cart getCart();
+    Cart create();
 
-    void addItem(Long productId);
+    Cart create(String user);
 
-    void removeItem(Long productId);
+    Optional<Cart> getCartById(String cartId);
 
-    void deleteItem(Long productId);
+    Optional<Cart> getCartByUsername(String username);
 
-    void clear();
+    Optional<Cart> getCart(String cartId, String username);
+
+    void addItem(String cartId, Long productId);
+
+    void removeItem(String cartId, Long productId);
+
+    void deleteItem(String cartId, Long productId);
+
+    void clear(String cartId);
 }

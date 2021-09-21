@@ -38,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(mapCartToOrderItems(cart));
         order.setDetails(OrderDetails.of(details.getAddress(), details.getPhone()));
         orderRepository.save(order);
+        cart.clear();
         return order;
     }
 
