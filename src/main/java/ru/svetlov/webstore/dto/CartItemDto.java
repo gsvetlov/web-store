@@ -1,16 +1,17 @@
 package ru.svetlov.webstore.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.svetlov.webstore.domain.Product;
 
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
+//@Data
+@Getter
+@Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor
-public class CartItemDto {
+public class CartItemDto implements Serializable {
     @Min(value = 1, message = "Invalid id")
     private Long productId;
 
@@ -36,6 +37,11 @@ public class CartItemDto {
         if (quantity < 0) {
             quantity = 0;
         }
+        recalculateSum();
+    }
+
+    public void changePrice(BigDecimal value) {
+        productPrice = value;
         recalculateSum();
     }
 

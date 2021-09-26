@@ -8,6 +8,7 @@ import ru.svetlov.webstore.dto.UserDto;
 import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
+    Optional<User> findUserByUsername(String username);
     User getUserRolesAndPermissionsByUsername(String username);
     Optional<User> getUserById(Long id);
     User createUserFromDto(UserDto dto);

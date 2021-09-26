@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class User {
+    @Transient
+    public final static User UNKNOWN = new User("", null);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
