@@ -15,6 +15,14 @@ const marketService = 'http://localhost:8189/market/api/v1';
                     templateUrl: 'registration/registration.html',
                     controller: 'registrationController'
                 })
+                .when('/cart', {
+                    templateUrl: 'cart/cart.html',
+                    controller: 'cartController'
+                })
+                .when('/checkout', {
+                    templateUrl: 'checkout/checkout.html',
+                    controller: 'checkoutController'
+                })
                 .otherwise({
                     redirectTo: '/'
                 });
@@ -26,7 +34,7 @@ const marketService = 'http://localhost:8189/market/api/v1';
         });
 })();
 
-angular.module('market-app').controller('indexController', function ($rootScope, $scope, $http, $localStorage) {
+angular.module('market-app').controller('indexController', function ($rootScope, $scope, $http, $localStorage, $location) {
 
     $scope.tryToAuth = function () {
         $http.post(marketService + '/auth', $scope.user)
@@ -52,6 +60,7 @@ angular.module('market-app').controller('indexController', function ($rootScope,
         if ($scope.user.password) {
             $scope.user.password = null;
         }
+        $location.path('/');
     };
 
     $scope.clearUser = function () {

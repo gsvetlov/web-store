@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class User {
+    @Transient
+    public final static User UNKNOWN = new User("", null);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -37,8 +40,8 @@ public class User {
     @NotNull
     @Length(min = 3, max = 127, message = "Valid password length is 3 to 127 characters")
     private String password;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "info_id")
     private UserInfo userInfo;
 

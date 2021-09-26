@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = loadUserWithRolesAndPermissions(username);
+        User user = getUserRolesAndPermissionsByUsername(username);
         Set<String> permissions = extractPermissionsAndRoles(user);
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
@@ -65,15 +65,16 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private User loadUserWithRolesAndPermissions(String username) {
+    @Override
+    public User getUserRolesAndPermissionsByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("user %s not found", username)));
         user.setRoles(getUserRoles(user));
         return user;
     }
 
     @Override
-    public User getUserRolesAndPermissionsByUsername(String username) {
-        return loadUserWithRolesAndPermissions(username);
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     @Override

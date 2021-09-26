@@ -48,14 +48,18 @@ INSERT INTO permissions (permission) values ('grant-all-permissions'),
                                             ('edit-role-permission'),
                                             ('edit-permission'),
                                             ('edit-user-role'),
-                                            ('edit-user-info');
+                                            ('edit-user-info'),
+                                            ('create-order');
 INSERT INTO roles_permissions values (1, 1),
                                      (1, 2),
                                      (1, 3),
                                      (1, 4),
                                      (1, 5),
+                                     (1, 6),
                                      (2, 4),
-                                     (2, 5);
+                                     (2, 5),
+                                     (2, 6),
+                                     (3, 6);
 
 -- sa:root '$2a$12$ofGl8wIqvoqlU2McOmMdjOp1ziqFdLSOYo075hxbBfPYkX0JNr5B.'
 -- admin:admin '$2a$12$Izsq7LbaEg28ZPwi4pkyxuGJboPFs0Ga62Fr3hudNQPKoYA/YyASW'

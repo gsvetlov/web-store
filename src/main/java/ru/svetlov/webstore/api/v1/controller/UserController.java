@@ -19,6 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
+    @PreAuthorize(value = "isFullyAuthenticated()")
     public ResponseEntity<?> getUserInfo(@PathVariable Long id, Principal principal) {
         User user = userService.getUserRolesAndPermissionsByUsername(principal.getName());
         if (user.getId().equals(id) || user.getPermissionsAsStrings().contains("edit-user-info")) {
