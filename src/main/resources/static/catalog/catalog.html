@@ -34,8 +34,7 @@
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
             <td>
-                <label class="btn btn-outline-info btn-sm" ng-click="btnUpdateClick(p)">Изменить</label>
-                <label class="btn btn-outline-danger btn-sm" ng-click="btnDeleteClick(p.id)">Удалить</label>
+                <button class="btn btn-outline-info btn-sm" ng-click="addToCart(p.id)">Добавить в корзину</button>
             </td>
         </tr>
         </tbody>
