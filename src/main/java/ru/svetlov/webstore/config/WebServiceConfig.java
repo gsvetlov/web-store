@@ -25,7 +25,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return new ServletRegistrationBean<>(servlet, WS_LOCATION_URI + "/*");
     }
 
-    @Bean
+    @Bean(name = "products")
     public DefaultWsdl11Definition productWsdl11Definition(XsdSchema productsSchema) {
         DefaultWsdl11Definition definition = new DefaultWsdl11Definition();
         definition.setPortTypeName("Products");
