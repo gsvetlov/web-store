@@ -90,6 +90,11 @@ public class ProductServiceImpl implements ProductService {
                 BigDecimal.valueOf(maxPrice));
     }
 
+    @Override
+    public List<Product> getAll() {
+        return productRepository.findAll();
+    }
+
     private void throwIfNotValid(Set<ConstraintViolation<Product>> violations) {
         if (!violations.isEmpty()) {
             throw new IllegalArgumentException(violations
