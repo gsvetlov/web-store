@@ -107,6 +107,11 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<>(usersList);
     }
 
+    @Override
+    public User getUserByName(String username) {
+        return userRepository.findUserByUsername(username).orElseThrow();
+    }
+
     private Collection<SecurityRole> getUserRoles(User user) {
         return roleRepository.findAllByIdIn(user.getRoles().stream().map(SecurityRole::getId).collect(Collectors.toSet()));
     }

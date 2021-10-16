@@ -13,4 +13,5 @@ public interface UserService extends UserDetailsService {
     Optional<User> getUserById(Long id);
     User createUserFromDto(UserDto dto);
     Page<User> getUsers(int pageNumber, int pageCount);
+    User getUserByName(String username);
 }
