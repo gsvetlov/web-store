@@ -4,22 +4,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.svetlov.webstore.domain.Comment;
 import ru.svetlov.webstore.domain.Product;
+import ru.svetlov.webstore.domain.User;
+import ru.svetlov.webstore.dto.CommentDto;
 import ru.svetlov.webstore.dto.ProductDto;
 import ru.svetlov.webstore.exception.BadRequestException;
 import ru.svetlov.webstore.exception.ResourceNotFoundException;
+import ru.svetlov.webstore.service.CommentService;
 import ru.svetlov.webstore.service.ProductService;
+import ru.svetlov.webstore.service.UserService;
 import ru.svetlov.webstore.util.ControllerUtil;
+
+import java.security.Principal;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
+    private final UserService userService;
     private final ProductService productService;
+    private final CommentService commentService;
 
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
@@ -59,5 +71,23 @@ public class ProductController {
         if (!productService.exists(dto.getId()))
             throw new ResourceNotFoundException("Product not found: " + dto);
         productService.update(dto.getId(), dto.getTitle(), dto.getPrice());
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<Collection<CommentDto>> getComments(@PathVariable Long productId) {
+        return new ResponseEntity<>(commentService
+                .getByProduct(productService.getById(productId).orElseThrow(() -> new ResourceNotFoundException("Invalid product id")))
+                .stream()
+                .map(CommentDto::new)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<?> addComment(@PathVariable Long productId, @RequestBody CommentDto dto, Principal principal) {
+        User user = userService.getUserByName(principal.getName());
+        Product product = productService.getById(productId).orElseThrow(() -> new ResourceNotFoundException("Invalid product id: " + productId));
+        Comment comment = commentService.add(user, product, dto.getContent());
+        return new ResponseEntity<>(new CommentDto(comment), HttpStatus.CREATED);
     }
 }
