@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+
+  redis:
+    container_name: "web-store-redis"
+    image: redis:6.2.6
+    ports:
+      - "6380:6380"
+    networks:
+      - web-store-back
+    volumes:
+      - redis-data:/
+
+  db:
+    container_name: "web-store-db"
+    image: postgres:13.4
+    ports:
+      - "5440:5432"
+    networks:
+      - web-store-back
+    volumes:
+      - db-data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRESDB=web-store
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+
+  flyway:
+    image: flyway/flyway:8
+    networks:
+      - web-store-back
+    volumes:
+      - ./flyway/migration:/flyway/sql
+      - ./flyway/conf:/flyway/conf
+    environment:
+      - FLYWAY_EDITION=community
+    depends_on:
+      - postgres
+
+    command:
+      - url://jdbc:postgres:5432/postgres -schemas=public -user=postgres -password=postgres -connectRetries=30 migrate
+
+  mq:
+    container_name: "web-store-rabbit"
+    image: rabbitmq:3.9.7-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - web-store-back
+      - web-store-front
+
+networks:
+  web-store-front:
+  web-store-back:
+
+volumes:
+  redis-data:
+  db-data:
