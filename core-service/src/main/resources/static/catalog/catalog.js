@@ -24,7 +24,7 @@ angular.module('market-app').controller('catalogController', function ($scope, $
     updateCatalog($scope.currentPage, $scope.itemsPerPage);
 
     $scope.addToCart = function (productId) {
-        $http.get(marketService + '/cart/add/' + productId);
+        $http.get(marketService + '/cart/' + $localStorage.marketCartId + '/add/' + productId);
         console.log('adding to cart: ' + productId);
     }
 
