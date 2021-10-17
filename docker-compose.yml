@@ -6,11 +6,11 @@ services:
     container_name: "web-store-redis"
     image: redis:6.2.6
     ports:
-      - "6380:6380"
+      - "6379:6379"
     networks:
       - web-store-back
     volumes:
-      - redis-data:/
+      - redis-data:/data
 
   db:
     container_name: "web-store-db"
@@ -24,7 +24,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRESDB=web-store
+      - POSTGRES_DB=wsdb
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
       interval: 5s
@@ -41,10 +41,9 @@ services:
     environment:
       - FLYWAY_EDITION=community
     depends_on:
-      - postgres
+      - db
 
-    command:
-      - url://jdbc:postgres:5432/postgres -schemas=public -user=postgres -password=postgres -connectRetries=30 migrate
+    command: -connectRetries=30 migrate
 
   mq:
     container_name: "web-store-rabbit"
