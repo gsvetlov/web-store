@@ -20,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Collection<Comment> getByProduct(Product product) {
-        return getByProduct(product.getId());
+        return repository.findAllByProduct(product);
     }
 
     @Override

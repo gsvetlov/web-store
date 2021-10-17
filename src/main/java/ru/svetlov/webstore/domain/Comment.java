@@ -1,5 +1,6 @@
 package ru.svetlov.webstore.domain;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -7,9 +8,10 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "comments", indexes = @Index(name = "idx_comments_product", columnList = "product_id"))
-@NamedEntityGraph(name = "comment-with-users", attributeNodes = @NamedAttributeNode(value = "user"))
+@NamedEntityGraph(name = "comment-with-users", attributeNodes = {@NamedAttributeNode(value = "user")})
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
