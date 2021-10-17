@@ -1,4 +1,4 @@
-angular.module('market-app').controller('catalogController', function ($scope, $http) {
+angular.module('market-app').controller('catalogController', function ($scope, $http, $localStorage) {
         $scope.itemsPerPage = 5;
         $scope.totalElements = 0;
         $scope.totalPages = 0;
@@ -24,7 +24,7 @@ angular.module('market-app').controller('catalogController', function ($scope, $
         updateCatalog($scope.currentPage, $scope.itemsPerPage);
 
         $scope.addToCart = function (productId) {
-            $http.get(marketService + '/cart/add/' + productId);
+            $http.get(marketService + '/cart/' + $localStorage.marketAppUser.cartId + '/add/' + productId);
             console.log('adding to cart: ' + productId);
         }
 
@@ -76,17 +76,5 @@ angular.module('market-app').controller('catalogController', function ($scope, $
                 '; title: ' + $scope.inputForm.title +
                 '; price: ' + $scope.inputForm.price +
                 '; }');
-        }
-
-        $scope.createProduct = function () {
-            console.log('submitted: {' +
-                ' id: ' + $scope.inputForm.id +
-                '; title: ' + $scope.inputForm.title +
-                '; price: ' + $scope.inputForm.price +
-                '; }');
-        }
-
-        $scope.resetForm = function () {
-            console.log('reset form');
         }
     });

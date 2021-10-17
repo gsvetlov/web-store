@@ -41,12 +41,12 @@ public class CartRepositoryImpl implements CartRepository {
 
     @Override
     public Optional<Cart> findById(String cartId) {
-        return Optional.ofNullable(cartTemplate.opsForValue().get(cartId));
+        return cartId == null ? Optional.empty() : Optional.ofNullable(cartTemplate.opsForValue().get(cartId));
     }
 
     @Override
     public boolean existsById(String cartId) {
-        return Optional.ofNullable(cartTemplate.hasKey(cartId)).orElse(false);
+        return cartId != null && Optional.ofNullable(cartTemplate.hasKey(cartId)).orElse(false);
     }
 
     @Override
