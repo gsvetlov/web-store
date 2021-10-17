@@ -1,10 +1,12 @@
 package ru.svetlov.webstore.dto;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 
-@RequiredArgsConstructor
+import java.util.Collection;
+
+@Data
 public class CommentPageDto {
-    private final boolean canEditComment;
-    private final Page<CommentDto> commentsPage;
+    private final Collection<CommentDto> comments;
+    private final boolean canAddComment;
 }

@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.svetlov.webstore.domain.Comment;
 import ru.svetlov.webstore.domain.Product;
-import ru.svetlov.webstore.domain.User;
 import ru.svetlov.webstore.dto.CommentDto;
+import ru.svetlov.webstore.dto.CommentPageDto;
 import ru.svetlov.webstore.dto.ProductDto;
 import ru.svetlov.webstore.exception.BadRequestException;
 import ru.svetlov.webstore.exception.ResourceNotFoundException;
@@ -21,7 +19,6 @@ import ru.svetlov.webstore.service.UserService;
 import ru.svetlov.webstore.util.ControllerUtil;
 
 import java.security.Principal;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,20 +72,21 @@ public class ProductController {
     }
 
     @GetMapping("/{pid}/comments")
-    public ResponseEntity<Collection<CommentDto>> getComments(@PathVariable(name = "pid") Long pid) {
+    public ResponseEntity<?> getComments(Principal principal, @PathVariable(name = "pid") Long pid) {
         List<CommentDto> comments = commentService
-                .getByProduct(pid)
+                .getAllByProduct(pid)
                 .stream()
                 .map(CommentDto::new)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+        boolean isUserEligibleToComment = principal != null && commentService.canLeaveComment(principal.getName(), pid);
+        return new ResponseEntity<>(new CommentPageDto(comments, isUserEligibleToComment),HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/comments")
-    public ResponseEntity<?> addComment(@PathVariable(name = "id") Long productId, @RequestBody CommentDto dto, Principal principal) {
-        User user = userService.getUserByName(principal.getName());
-        Product product = productService.getById(productId).orElseThrow(() -> new ResourceNotFoundException("Invalid product id: " + productId));
-        Comment comment = commentService.add(user, product, dto.getContent());
-        return new ResponseEntity<>(new CommentDto(comment), HttpStatus.CREATED);
+    @PostMapping("/{id}/comments/add")
+    public ResponseEntity<?> addComment(Principal principal,
+                                        @PathVariable(name = "id") Long productId,
+                                        @RequestBody String content) {
+        CommentDto comment = new CommentDto(commentService.add(principal.getName(), productId, content));
+        return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 }

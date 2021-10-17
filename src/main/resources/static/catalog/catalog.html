@@ -30,9 +30,11 @@
         </thead>
         <tbody ng-repeat="p in products">
         <tr>
-            <td>{{p.id}}</td>
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" ng-click="getInfo(p.id, p.title, p.price)">Инфо</button>
+            </td>
             <td>
                 <button class="btn btn-outline-info btn-sm" ng-click="addToCart(p.id)">Добавить в корзину</button>
             </td>
@@ -40,19 +42,4 @@
         </tbody>
     </table>
     <br>
-    <h4>Добавить новый продукт</h4>
-    <form novalidate ng-submit="createProduct()">
-        <label for="product_id">
-            <input id="product_id" class="form-control" type="number" placeholder="Id" ng-model="inputForm.id">
-        </label>
-        <label for="product_title">
-            <input id="product_title" class="form-control" type="text" placeholder="Название" ng-model="inputForm.title">
-        </label>
-        <label for="product_price">
-            <input id="product_price" class="form-control" type="number" placeholder="Цена" ng-model="inputForm.price">
-        </label>
-        <br>
-        <input class="btn btn-primary btn-sm" type="submit">
-        <input class="btn btn-secondary btn-sm" type="reset">
-    </form>
 </div>

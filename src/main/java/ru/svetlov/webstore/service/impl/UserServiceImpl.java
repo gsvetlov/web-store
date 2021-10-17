@@ -108,8 +108,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByName(String username) {
-        return userRepository.findUserByUsername(username).orElseThrow();
+    public Optional<User> findUserByName(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     private Collection<SecurityRole> getUserRoles(User user) {

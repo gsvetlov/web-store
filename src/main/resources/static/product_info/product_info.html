@@ -1,0 +1,42 @@
+<div>
+    <h4>О продукте</h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{product.title}}</td>
+            <td>{{product.price}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <h4>Комментарии</h4>
+    <table class="table">
+        <tr ng-repeat="c in comments">
+            <td>{{c.user}}<br>{{c.date}}</td>
+            <td>{{c.content}}</td>
+        </tr>
+        <tr>
+            <td>
+                <button class="btn btn-outline-info btn-sm" ng-click="goBack()">Назад</button>
+            </td>
+        </tr>
+    </table>
+    <br>
+</div>
+<div class ="container" ng-show="canAddComment">
+    <h4>Добавить комментарий</h4>
+    <form novalidate ng-submit="createComment()">
+        <label for="user_comment">
+            <input id="user_comment" class="form-control" type="text" placeholder="Комментарий" ng-model="commentsForm.comment">
+        </label>
+        <br>
+        <input class="btn btn-primary btn-sm" type="submit">
+        <input class="btn btn-secondary btn-sm" type="reset">
+    </form>
+</div>
