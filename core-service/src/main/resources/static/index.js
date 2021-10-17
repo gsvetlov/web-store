@@ -73,6 +73,6 @@ angular.module('market-app').controller('indexController', function ($rootScope,
     };
 
     $rootScope.isUserLoggedIn = function () {
-        return $localStorage.marketAppUser ? true : false;
+        return !!$localStorage.marketAppUser;
         }
 });
