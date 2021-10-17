@@ -22,6 +22,7 @@ import ru.svetlov.webstore.util.ControllerUtil;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -73,18 +74,18 @@ public class ProductController {
         productService.update(dto.getId(), dto.getTitle(), dto.getPrice());
     }
 
-    @GetMapping("/{id}/comments")
-    public ResponseEntity<Collection<CommentDto>> getComments(@PathVariable Long productId) {
-        return new ResponseEntity<>(commentService
-                .getByProduct(productService.getById(productId).orElseThrow(() -> new ResourceNotFoundException("Invalid product id")))
+    @GetMapping("/{pid}/comments")
+    public ResponseEntity<Collection<CommentDto>> getComments(@PathVariable(name = "pid") Long pid) {
+        List<CommentDto> comments = commentService
+                .getByProduct(pid)
                 .stream()
                 .map(CommentDto::new)
-                .collect(Collectors.toList()),
-                HttpStatus.OK);
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<?> addComment(@PathVariable Long productId, @RequestBody CommentDto dto, Principal principal) {
+    public ResponseEntity<?> addComment(@PathVariable(name = "id") Long productId, @RequestBody CommentDto dto, Principal principal) {
         User user = userService.getUserByName(principal.getName());
         Product product = productService.getById(productId).orElseThrow(() -> new ResourceNotFoundException("Invalid product id: " + productId));
         Comment comment = commentService.add(user, product, dto.getContent());
