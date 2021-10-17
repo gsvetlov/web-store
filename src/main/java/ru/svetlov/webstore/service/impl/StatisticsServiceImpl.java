@@ -2,7 +2,8 @@ package ru.svetlov.webstore.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.svetlov.webstore.dto.StatisticsDto;
@@ -31,24 +32,9 @@ public class StatisticsServiceImpl implements StatisticsService {
                         .collect(Collectors.toList()));
     }
 
-    @Around(value = "execution(public * ru.svetlov.webstore.service.impl.UserServiceImpl.*(..))")
-    public Object userServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "UserService");
-    }
-
-    @Around(value = "execution(public * ru.svetlov.webstore.service.impl.RedisCartServiceImpl.*(..))")
-    public Object cartServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "CartService");
-    }
-
-    @Around(value = "execution(public * ru.svetlov.webstore.service.impl.ProductServiceImpl.*(..))")
-    public Object productServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "ProductService");
-    }
-
-    @Around(value = "execution(public * ru.svetlov.webstore.service.impl.OrderServiceImpl.*(..))")
-    public Object orderServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "OrderService");
+    @Around(value = "execution(public * ru.svetlov.webstore.service.impl.*.*(..))")
+    public Object serviceTracker(ProceedingJoinPoint pjp) throws Throwable {
+        return measureTime(pjp, pjp.toLongString());
     }
 
     private Object measureTime(ProceedingJoinPoint proceedingJoinPoint, String serviceKey) throws Throwable {
