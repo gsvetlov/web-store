@@ -40,6 +40,7 @@ angular.module('market-app').controller('cartController', function ($scope, $htt
         $http.get(marketService + '/cart/' + $scope.cart.cartId + '/clear')
             .then(function successCallback(response) {
                 console.log('clearing cart...')
+                delete $localStorage.marketCartId;
                 updateCart();
             });
     }
@@ -47,4 +48,5 @@ angular.module('market-app').controller('cartController', function ($scope, $htt
     $scope.createOrder = function () {
         $location.path('/checkout')
     }
+
 });

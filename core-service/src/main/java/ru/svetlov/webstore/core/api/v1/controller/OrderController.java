@@ -23,11 +23,12 @@ public class OrderController {
     private final CartService cartService;
     private final OrderService orderService;
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderDetailsDto dto, Principal principal) {
-        User user = userService.getUserRolesAndPermissionsByUsername(principal.getName());
-        Cart cart = cartService.create();
+        User user = userService.findUserByName(principal.getName()).orElseThrow();
+        Cart cart = cartService.getCartByUsername(user.getUsername()).orElseThrow();
         Order order = orderService.createOrder(user, cart, dto);
+        cartService.clear(cart.getId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

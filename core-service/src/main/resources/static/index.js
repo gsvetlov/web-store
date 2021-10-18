@@ -69,6 +69,7 @@ angular.module('market-app').controller('indexController', function ($rootScope,
 
     $scope.clearUser = function () {
         delete $localStorage.marketAppUser;
+        delete $localStorage.marketCartId;
         $http.defaults.headers.common.Authorization = '';
     };
 

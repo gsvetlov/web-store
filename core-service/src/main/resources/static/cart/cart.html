@@ -17,10 +17,6 @@
                 <button class="btn-sm btn-danger" ng-click="deleteItem(i.productId)">X</button>
             </td>
             <td>{{i.productPrice + ' x ' + i.quantity + ' = ' + i.itemSum}}</td>
-<!--            <td>-->
-<!--                <label class="btn btn-outline-info btn-sm" ng-click="btnUpdateClick(p)">Изменить</label>-->
-<!--                <label class="btn btn-outline-danger btn-sm" ng-click="btnDeleteClick(p.id)">Удалить</label>-->
-<!--            </td>-->
         </tr>
         <tr>
             <td colspan="2">Итого:</td>
@@ -29,7 +25,7 @@
         <tr>
             <td></td>
             <td>
-                <button class="btn btn-info" ng-click="createOrder()">Оформить заказ</button>
+                <button class="btn btn-info" ng-show="isUserLoggedIn" ng-click="createOrder()">Оформить заказ</button>
             </td>
             <td>
                 <button class="btn btn-outline-danger" ng-click="clearCart()">Очистить корзину</button>
