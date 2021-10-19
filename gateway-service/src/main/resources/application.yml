@@ -1,0 +1,30 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    discovery:
+      enabled: true
+      client:
+        health-indicator:
+          enabled: true
+    gateway:
+      enabled: true
+      filter:
+        prefix-path:
+          enabled: true
+      routes:
+        - id: product-service
+          uri: http://localhost:8189
+          predicates:
+            - Path=/products/**
+          filters:
+            - PrefixPath=/market/api/v1
+        - id: rewritepath_route
+          uri: http://localhost:8189
+          predicates:
+            - Path=/core/**
+          filters:
+            - RewritePath=/core(?<segment>/?.*), /market/api/v1$\{segment}
