@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.svetlov.webstore.api.dto.UserDto;
+import ru.svetlov.webstore.api.dtos.UserDto;
 import ru.svetlov.webstore.core.domain.User;
 import ru.svetlov.webstore.core.service.UserService;
 import ru.svetlov.webstore.core.util.converters.UserConverter;

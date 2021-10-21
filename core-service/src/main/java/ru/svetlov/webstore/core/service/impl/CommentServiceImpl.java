@@ -2,11 +2,11 @@ package ru.svetlov.webstore.core.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.svetlov.webstore.api.exceptions.BadRequestException;
+import ru.svetlov.webstore.api.exceptions.ResourceNotFoundException;
 import ru.svetlov.webstore.core.domain.Comment;
 import ru.svetlov.webstore.core.domain.Product;
 import ru.svetlov.webstore.core.domain.User;
-import ru.svetlov.webstore.core.exception.BadRequestException;
-import ru.svetlov.webstore.core.exception.ResourceNotFoundException;
 import ru.svetlov.webstore.core.repository.CommentRepository;
 import ru.svetlov.webstore.core.service.AnalyticsService;
 import ru.svetlov.webstore.core.service.CommentService;

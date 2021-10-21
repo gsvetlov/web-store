@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.api.dto;
+package ru.svetlov.webstore.api.dtos;
 
 public class ProductDto {
 

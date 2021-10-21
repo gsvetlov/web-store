@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.svetlov.webstore.api.dto.CartDto;
-import ru.svetlov.webstore.core.exception.BadRequestException;
-import ru.svetlov.webstore.core.exception.ResourceNotFoundException;
+import ru.svetlov.webstore.api.dtos.CartDto;
+import ru.svetlov.webstore.api.exceptions.BadRequestException;
+import ru.svetlov.webstore.api.exceptions.ResourceNotFoundException;
 import ru.svetlov.webstore.core.service.CartService;
 import ru.svetlov.webstore.core.util.cart.Cart;
 

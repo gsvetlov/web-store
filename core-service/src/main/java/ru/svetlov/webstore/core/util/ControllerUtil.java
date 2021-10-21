@@ -2,7 +2,7 @@ package ru.svetlov.webstore.core.util;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import ru.svetlov.webstore.core.exception.BadRequestException;
+import ru.svetlov.webstore.api.exceptions.BadRequestException;
 
 import java.util.stream.Collectors;
 

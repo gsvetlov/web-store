@@ -1,7 +1,7 @@
 package ru.svetlov.webstore.core.util.cart;
 
+import ru.svetlov.webstore.api.dtos.CartItemDto;
 import ru.svetlov.webstore.core.domain.Product;
-import ru.svetlov.webstore.api.dto.CartItemDto;
 
 import java.math.BigDecimal;
 import java.util.Collection;

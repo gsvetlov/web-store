@@ -2,11 +2,12 @@ package ru.svetlov.webstore.core.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.svetlov.webstore.api.dto.StatisticsDto;
-import ru.svetlov.webstore.api.dto.StatisticsRecord;
+import ru.svetlov.webstore.api.dtos.StatisticsDto;
+import ru.svetlov.webstore.api.dtos.StatisticsRecord;
 import ru.svetlov.webstore.core.service.StatisticsService;
 
 import java.time.LocalTime;
@@ -46,7 +47,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return measureTime(pjp, "ProductService");
     }
 
-    @Around(value = "execution(public * ru.svetlov.webstore.core.service.impl.OrderServiceImpl.*(..))")
+    @Around(value = "execution(public * ru.svetlov.webapp.order.service.impl.OrderServiceImpl.*(..))")
     public Object orderServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
         return measureTime(pjp, "OrderService");
     }

@@ -1,7 +1,7 @@
 package ru.svetlov.webstore.core.util.converters;
 
 import org.springframework.stereotype.Component;
-import ru.svetlov.webstore.api.dto.UserDto;
+import ru.svetlov.webstore.api.dtos.UserDto;
 import ru.svetlov.webstore.core.domain.User;
 
 import java.util.Collection;
