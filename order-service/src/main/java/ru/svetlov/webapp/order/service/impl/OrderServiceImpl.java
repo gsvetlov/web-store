@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> getOrderById(Long orderId, Long userId) {
         Optional<Order> order = orderRepository.findOrderById(orderId);
-        return order.isPresent() && order.get().getUserId().equals(userId)
+        return order.isPresent() && userId.equals(order.get().getUserId())
                 ? order : Optional.empty();
     }
 
