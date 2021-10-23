@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.api.dto;
+package ru.svetlov.webstore.api.dtos;
 
 import java.math.BigDecimal;
 import java.util.Collection;

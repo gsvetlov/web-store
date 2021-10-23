@@ -5,14 +5,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import ru.svetlov.webstore.api.dtos.CartItemDto;
+import ru.svetlov.webstore.api.exceptions.ResourceNotFoundException;
 import ru.svetlov.webstore.core.domain.Product;
-import ru.svetlov.webstore.api.dto.CartItemDto;
-import ru.svetlov.webstore.core.exception.ResourceNotFoundException;
 import ru.svetlov.webstore.core.util.cart.Cart;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 

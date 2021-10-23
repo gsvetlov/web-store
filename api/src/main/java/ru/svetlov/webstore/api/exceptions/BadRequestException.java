@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.core.exception;
+package ru.svetlov.webstore.api.exceptions;
 
 public class BadRequestException extends RuntimeException {
     public BadRequestException(String message) {

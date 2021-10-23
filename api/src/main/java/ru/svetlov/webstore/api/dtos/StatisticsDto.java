@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.api.dto;
+package ru.svetlov.webstore.api.dtos;
 
 import java.util.ArrayList;
 import java.util.Collection;

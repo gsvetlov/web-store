@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.core.domain;
+package ru.svetlov.webapp.order.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,9 +27,8 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "details_id")
@@ -77,8 +76,8 @@ public class Order {
     @Column(name = "updated_on")
     private LocalDateTime modified;
 
-    public Order(User user) {
-        this.user = user;
+    public Order(Long userId) {
+        this.userId = userId;
         status = OrderStatus.NEW;
     }
 

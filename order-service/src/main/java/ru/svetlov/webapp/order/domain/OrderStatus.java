@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.core.domain;
+package ru.svetlov.webapp.order.domain;
 
 import java.util.stream.Stream;
 

@@ -1,4 +1,4 @@
-package ru.svetlov.webstore.core.exception;
+package ru.svetlov.webstore.api.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

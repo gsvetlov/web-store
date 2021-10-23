@@ -1,7 +1,7 @@
 server:
-  port: 8189
+  port: 8191
   servlet:
-    context-path: /market-core
+    context-path: /market-order
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -16,7 +16,7 @@ spring:
           time_zone: UTC
         dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
-jwt:
-  secret: kvb789bv8974bdsa9wqyH87fweyHXIL7*7*&&78tgFc87trfA&BCI&lbb7##jF*y
-  lifetime: 3600000 # 1 Hour
-
+integration:
+  services:
+    cart:
+      uri: http://localhost:8189/market-core/api/v1/cart

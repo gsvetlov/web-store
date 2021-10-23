@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.svetlov.webstore.api.dto.ApiErrorDto;
-import ru.svetlov.webstore.api.dto.AuthRequest;
-import ru.svetlov.webstore.api.dto.AuthResponse;
+import ru.svetlov.webstore.api.dtos.ApiErrorDto;
+import ru.svetlov.webstore.api.dtos.AuthRequest;
+import ru.svetlov.webstore.api.dtos.AuthResponse;
 import ru.svetlov.webstore.core.service.UserService;
 import ru.svetlov.webstore.core.util.JwtTokenUtil;
 
