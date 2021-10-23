@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+<x:schema xmlns:x="http://www.w3.org/2001/XMLSchema"
+           xmlns:ws="http://webstore.svetlov.ru/ws/products"
+          targetNamespace="http://webstore.svetlov.ru/ws/products" elementFormDefault="qualified">
+    <x:element name="getProductByIdRequest">
+        <x:complexType>
+            <x:sequence>
+                <x:element name="id" type="x:long"/>
+            </x:sequence>
+        </x:complexType>
+    </x:element>
+
+    <x:element name="getProductByIdResponse">
+        <x:complexType>
+            <x:sequence>
+                <x:element name="product" type="ws:product"/>
+            </x:sequence>
+        </x:complexType>
+    </x:element>
+
+    <x:element name="getAllProductsRequest">
+        <x:complexType/>
+    </x:element>
+
+    <x:element name="getAllProductsResponse">
+        <x:complexType>
+            <x:sequence>
+                <x:element type="ws:product" name="products" maxOccurs="unbounded"/>
+            </x:sequence>
+        </x:complexType>
+    </x:element>
+
+    <x:complexType name="product">
+        <x:sequence>
+            <x:element type="x:long" name="id"/>
+            <x:element type="x:string" name="title"/>
+            <x:element type="x:decimal" name="price"/>
+        </x:sequence>
+    </x:complexType>
+</x:schema>

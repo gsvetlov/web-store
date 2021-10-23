@@ -16,4 +16,5 @@ public interface ProductService {
     void update(Long id, String title, Double cost);
     void deleteById(Long id);
     Page<Product> getAll(int page, int itemsPerPage, Double minPrice, Double maxPrice);
+    List<Product> getAll();
 }

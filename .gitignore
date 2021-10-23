@@ -35,3 +35,4 @@ build/
 ### JPA Buddy ###
 .jpb
 
+/src/main/java/META-INF/JAXB/
