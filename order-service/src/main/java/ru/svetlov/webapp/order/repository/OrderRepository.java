@@ -1,9 +1,9 @@
-package ru.svetlov.webstore.core.repository;
+package ru.svetlov.webapp.order.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.svetlov.webstore.core.domain.Order;
+import ru.svetlov.webapp.order.domain.Order;
 
 import java.util.Optional;
 

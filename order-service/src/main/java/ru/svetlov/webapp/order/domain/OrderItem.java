@@ -1,6 +1,8 @@
-package ru.svetlov.webstore.core.domain;
+package ru.svetlov.webapp.order.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,9 +26,8 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(name = "quantity")
     private int quantity;
@@ -45,12 +46,12 @@ public class OrderItem {
     @Column(name = "updated_on")
     private LocalDateTime modified;
 
-    public static OrderItem of(Product product, int quantity, BigDecimal productPrice, BigDecimal itemPrice) {
-        return new OrderItem(product, quantity, productPrice, itemPrice);
+    public static OrderItem of(Long productId, int quantity, BigDecimal productPrice, BigDecimal itemPrice) {
+        return new OrderItem(productId, quantity, productPrice, itemPrice);
     }
 
-    protected OrderItem(Product product, int quantity, BigDecimal productPrice, BigDecimal itemPrice) {
-        this.product = product;
+    protected OrderItem(Long productId, int quantity, BigDecimal productPrice, BigDecimal itemPrice) {
+        this.productId = productId;
         this.quantity = quantity;
         this.productPrice = productPrice;
         this.itemPrice = itemPrice;

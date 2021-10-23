@@ -1,6 +1,9 @@
-package ru.svetlov.webstore.core.domain;
+package ru.svetlov.webapp.order.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
