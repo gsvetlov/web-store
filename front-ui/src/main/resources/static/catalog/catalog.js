@@ -28,15 +28,6 @@ angular.module('market-app').controller('catalogController', function ($scope, $
         console.log('adding to cart: ' + productId);
     }
 
-    $scope.btnDeleteClick = function (id) {
-        console.log('button clicked ' + id);
-        $http.delete(marketService + '/products/' + id)
-            .then(function (response) {
-                console.log('delete response: ' + response);
-                updateCatalog($scope.currentPage, $scope.itemsPerPage);
-            });
-    };
-
     $scope.firstPage = function () {
         console.log('first page');
         $scope.currentPage = 1;

@@ -1,4 +1,4 @@
-const marketService = 'http://localhost:8189/market/api/v1';
+const marketService = 'http://localhost:9999/market/api/v1';
 (function () {
     angular.module('market-app', ['ngRoute', 'ngStorage'])
         .config(function config($routeProvider, $locationProvider) {
