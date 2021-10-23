@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "application.gateway.url",
+      "type": "java.lang.String",
+      "description": "Gateway service url and port"
+  }
+] }

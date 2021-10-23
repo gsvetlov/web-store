@@ -1,0 +1,8 @@
+server:
+  servlet:
+    context-path: /market
+  port: 8081
+
+application:
+  gateway:
+    url: http://localhost:9999
