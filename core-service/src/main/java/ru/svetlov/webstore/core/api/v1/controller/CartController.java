@@ -39,7 +39,7 @@ public class CartController {
             cart = cartService.getCartById(id).orElseThrow(() -> new ResourceNotFoundException("Cart: " + id + " not found."));
         } else {
             String user = principal.getName();
-            cart = cartService.getCart(id, user).orElseThrow(() -> new BadRequestException("Failed to merge cart:" + id + " for user: " + user));
+            cart = cartService.getCart(id, user).orElse(cartService.create(user));
         }
         return ResponseEntity.ok(new CartDto(cart.getId(), cart.getContents(), cart.getTotal()));
     }

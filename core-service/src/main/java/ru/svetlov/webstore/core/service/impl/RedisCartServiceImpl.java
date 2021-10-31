@@ -40,18 +40,18 @@ public class RedisCartServiceImpl implements CartService {
     @Override
     public Optional<Cart> getCart(String cartId, String username) {
         Optional<Cart> userCart = getCartByUsername(username);
+        if (userCart.isEmpty()) {
+            userCart = Optional.ofNullable(create(username));
+        }
         if (isUserCartSameWithRequested(userCart, cartId)) {
             return userCart;
         }
-
         Optional<Cart> requestedCart = getCartById(cartId);
         if (canMerge(requestedCart, userCart)) {
             return mergeCarts(requestedCart, userCart);
         }
-
         if (canSetOwner(requestedCart))
             return setOwner(requestedCart, username);
-
         return Optional.empty();
     }
 

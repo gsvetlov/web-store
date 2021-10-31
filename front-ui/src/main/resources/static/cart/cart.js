@@ -13,7 +13,7 @@ angular.module('market-app').controller('cartController', function ($scope, $htt
     console.log('cart update...');
 
     $scope.incrementItem = function (productId) {
-        $http.get(marketService + '/cart/' + $scope.cart.cartId + '/add/' + productId)
+        $http.get(marketService + '/cart/' + $localStorage.marketCartId + '/add/' + productId)
             .then(function successCallback(response) {
                 console.log('add item: ' + productId);
                 updateCart();
@@ -21,7 +21,7 @@ angular.module('market-app').controller('cartController', function ($scope, $htt
     }
 
     $scope.decrementItem = function (productId) {
-        $http.get(marketService  + '/cart/' + $scope.cart.cartId + '/remove/' + productId)
+        $http.get(marketService  + '/cart/' + $localStorage.marketCartId + '/remove/' + productId)
             .then(function successCallback(response) {
                 console.log('remove item: ' + productId);
                 updateCart();
@@ -29,16 +29,16 @@ angular.module('market-app').controller('cartController', function ($scope, $htt
     }
 
     $scope.deleteItem = function (productId) {
-        $http.get(marketService + '/cart/' + $scope.cart.cartId + '/delete/' + productId)
+        $http.get(marketService + '/cart/' + $localStorage.marketCartId + '/delete/' + productId)
             .then(function successCallback(response) {
                 console.log('delete item: ' + productId);
                 updateCart();
             });
     }
 
-    $scope.clearCart = function (productId) {
-        $http.get(marketService + '/cart/' + $scope.cart.cartId + '/clear')
-            .then(function successCallback(response) {
+    $scope.clearCart = function () {
+        $http.get(marketService + '/cart/' + $localStorage.marketCartId + '/clear')
+            .then(function successCallback() {
                 console.log('clearing cart...')
                 updateCart();
             });
