@@ -6,8 +6,4 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class OrderServiceConfiguration {
-    @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
 }

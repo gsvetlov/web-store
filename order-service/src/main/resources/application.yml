@@ -19,4 +19,4 @@ spring:
 integration:
   services:
     cart:
-      uri: http://localhost:8189/market-core/api/v1/cart
+      url: http://localhost:8189/market-core/api/v1/cart
