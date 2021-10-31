@@ -5,7 +5,7 @@ angular.module('market-app').controller('checkoutController', function ($scope, 
                 ' address: ' + $scope.inputForm.address +
                 '; phone: ' + $scope.inputForm.phone +
                 '; }');
-            $http.put(marketService + '/orders', $scope.inputForm)
+            $http.post(marketService + '/orders', $scope.inputForm)
                 .then(function successCallback(response) {
                     console.log(response.data);
                     alert('Заказ успешно создан');

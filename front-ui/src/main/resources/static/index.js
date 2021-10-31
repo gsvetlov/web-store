@@ -1,4 +1,4 @@
-const marketService = 'http://localhost:9999/market/api/v1';
+const marketService = 'http://localhost:9999';
 (function () {
     angular.module('market-app', ['ngRoute', 'ngStorage'])
         .config(function config($routeProvider, $locationProvider) {
@@ -46,6 +46,7 @@ angular.module('market-app').controller('indexController', function ($rootScope,
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
                     $localStorage.marketAppUser = {
+                        userId: $scope.user.id,
                         username: $scope.user.username,
                         token: response.data.token};
                     $scope.user.username = null;

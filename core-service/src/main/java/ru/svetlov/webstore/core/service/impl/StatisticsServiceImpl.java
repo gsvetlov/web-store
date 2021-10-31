@@ -32,24 +32,9 @@ public class StatisticsServiceImpl implements StatisticsService {
                         .collect(Collectors.toList()));
     }
 
-    @Around(value = "execution(public * ru.svetlov.webstore.core.service.impl.UserServiceImpl.*(..))")
-    public Object userServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "UserService");
-    }
-
-    @Around(value = "execution(public * ru.svetlov.webstore.core.service.impl.RedisCartServiceImpl.*(..))")
-    public Object cartServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "CartService");
-    }
-
-    @Around(value = "execution(public * ru.svetlov.webstore.core.service.impl.ProductServiceImpl.*(..))")
-    public Object productServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "ProductService");
-    }
-
-    @Around(value = "execution(public * ru.svetlov.webapp.order.service.impl.OrderServiceImpl.*(..))")
-    public Object orderServiceTracker(ProceedingJoinPoint pjp) throws Throwable {
-        return measureTime(pjp, "OrderService");
+    @Around(value = "execution(public * ru.svetlov.webstore.core.service.impl.*.*(..))")
+    public Object serviceTracker(ProceedingJoinPoint pjp) throws Throwable {
+        return measureTime(pjp, pjp.toLongString());
     }
 
     private Object measureTime(ProceedingJoinPoint proceedingJoinPoint, String serviceKey) throws Throwable {

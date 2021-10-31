@@ -11,6 +11,16 @@ spring:
         health-indicator:
           enabled: true
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:8081"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders: "*"
       enabled: true
       filter:
         prefix-path:
@@ -21,10 +31,30 @@ spring:
           predicates:
             - Path=/products/**
           filters:
-            - PrefixPath=/market/api/v1
-        - id: rewritepath_route
+            - PrefixPath=/market-core/api/v1
+        - id: auth-service
           uri: http://localhost:8189
           predicates:
-            - Path=/core/**
+            - Path=/auth/**
           filters:
-            - RewritePath=/core(?<segment>/?.*), /market/api/v1$\{segment}
+            - PrefixPath=/market-core/api/v1
+        - id: cart-service
+          uri: http://localhost:8189
+          predicates:
+            - Path=/cart/**
+          filters:
+            - PrefixPath=/market-core/api/v1
+        - id: order-service
+          uri: http://localhost:8191
+          predicates:
+            - Path=/order/**
+          filters:
+            - PrefixPath=/market-order/api/v1
+logging:
+  level:
+    reactor:
+      netty: TRACE
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
